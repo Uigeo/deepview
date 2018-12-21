@@ -12,11 +12,12 @@ export const change = createAction(CHANGE); // { name, value }
 const initialState = Map({
     visible: false,
     mode: null, // create, modify
-    contact: Map({
-        id: null,
-        name: '',
-        phone: '',
-        color: 'black'
+    slide: Map({
+        sname: '',
+        upload: null,
+        hostpital: '',
+        diagnosis: null,
+        dying : ''
     })
 });
 

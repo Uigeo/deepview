@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -18,15 +18,16 @@ const styles = {
     }
 }
 
-class componentName extends Component {
+class ChartCard extends Component {
 
     constructor (props) {
         super(props);
-        const { classes } = props;
+        
     }
     
 
     render () {
+        const { classes } = this.props;
         return (
             <Card className={classes.card}>
             <CardActionArea>
@@ -58,8 +59,8 @@ class componentName extends Component {
     }
 }
 
-componentName.propTypes = {
+ChartCard.propTypes = {
     classes: PropTypes.object.isRequired,
 }
 
-export default componentName
+export default withStyles(styles)(ChartCard);

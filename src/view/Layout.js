@@ -13,13 +13,16 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
-import SimpleLineChart from './SimpleLineChart';
+import SimpleLineChart from '../components/SimpleLineChart';
 
 import { BrowserRouter as Router, Route} from 'react-router-dom';
-import SimpleTableContainer from '../containters/SimpleTableContainer';
+import SimpleTableContainer from '../containers/SimpleTableContainer';
+import Dashboard from './Dashboard';
 
 
 const drawerWidth = 240;
+
+
 
 const styles = theme => ({
   root: {
@@ -166,6 +169,8 @@ class Layout extends React.Component {
         </Drawer>
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
+            <Route exact path='/' component={Dashboard}/>
+           
             <Route path='/chart' component={SimpleLineChart}/>
             <Route path='/table' component={SimpleTableContainer}/>
         </main>

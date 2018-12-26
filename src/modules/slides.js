@@ -1,15 +1,40 @@
 import { Map, List } from 'immutable';
 import { createAction, handleActions } from 'redux-actions';
+import axios from 'axios';
 
-const CREATE = 'contact/CREATE';
-const MODIFY = 'contact/MODIFY';
-const REMOVE = 'contact/REMOVE';
-const TOGGLE_FAVORITE = 'contact/TOGGLE_FAVORITE';
+function getSlides(limit){
+    return axios.get('localhost:3001/slides/'+ limit);
+}
 
+const RETRIEVE_PENDING = 'slide/RETRIEVE_PENDING';
+const RETRIEVE_SUCCESS = 'slide/RETRIEVE_SUCCESS';
+const RETRIEVE_FAILURE = 'slide/RETRIEVE_FAILURE';
+const CREATE = 'slide/CREATE';
+const MODIFY = 'slide/MODIFY';
+const REMOVE = 'slide/REMOVE';
+
+
+export const retrieve = (limit) => dispatch => {
+    dispatch({type : RETRIEVE_PENDING});
+
+    return getSlides(limit).then(
+        (response)=> {
+            dispatch({
+                type: RETRIEVE_SUCCESS,
+                payload : response
+            });
+        }
+    ).catch( error=> {
+        dispatch({
+            type : RETRIEVE_FAILURE,
+            payload: error
+        });
+    });
+}
 export const create = createAction(CREATE); 
 export const modify = createAction(MODIFY); 
 export const remove = createAction(REMOVE); 
-export const toggleFavorite = createAction(TOGGLE_FAVORITE); 
+
 
 const initialState = List([
     Map({
@@ -74,6 +99,15 @@ const initialState = List([
 
 
 export default handleActions({
+    [RETRIEVE_PENDING] : (state, action) => {
+        return state.concat();
+    },
+    [RETRIEVE_SUCCESS] : (state, action) => {
+        return state.concat();
+    },
+    [RETRIEVE_FAILURE] : (state, action) => {
+        return state.concat();
+    },
     [CREATE]: (state, action) => {
         return state.push(Map(action.payload));
     },
@@ -87,8 +121,5 @@ export default handleActions({
 
         return state.delete(index);
     },
-    [TOGGLE_FAVORITE]: (state, action) => {
-        const index = state.findIndex(contact => contact.get('id') === action.payload);
-        return state.update(index, contact => contact.set('favorite', !contact.get('favorite')));
-    }
+
 }, initialState)

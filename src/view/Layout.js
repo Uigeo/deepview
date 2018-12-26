@@ -16,13 +16,12 @@ import DrawList from './DrawList';
 import SimpleLineChart from '../components/SimpleLineChart';
 
 import { BrowserRouter as Router, Route} from 'react-router-dom';
-import SimpleTableContainer from '../containers/SimpleTableContainer';
 import Dashboard from './Dashboard';
+import TableContainer from '../containers/TableContainer';
+import Footer from './Footer';
 
 
 const drawerWidth = 240;
-
-
 
 const styles = theme => ({
   root: {
@@ -31,6 +30,9 @@ const styles = theme => ({
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
     
+  },
+  icon : {
+    color : '#FFFFFF'
   },
   toolbarIcon: {
     display: 'flex',
@@ -121,6 +123,7 @@ class Layout extends React.Component {
     const { classes } = this.props;
 
     return (
+     
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
@@ -164,10 +167,10 @@ class Layout extends React.Component {
         >
           <div className={classes.toolbarIcon}>
             <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon className={classes.icon}/>
             </IconButton>
           </div>
-          <Divider />
+          
             <DrawList/>
           <Divider />
           
@@ -176,9 +179,13 @@ class Layout extends React.Component {
             <div className={classes.appBarSpacer} />
             <Route exact path='/' component={Dashboard}/>
             <Route path='/chart' component={SimpleLineChart}/>
-            <Route path='/table' component={SimpleTableContainer}/>
+            <Route path='/table' component={TableContainer}/>
+            <Footer/>
         </main>
+        
       </div>
+      
+   
     );
   }
 }

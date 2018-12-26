@@ -6,13 +6,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
+
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from './listItems';
+import DrawList from './DrawList';
 import SimpleLineChart from '../components/SimpleLineChart';
 
 import { BrowserRouter as Router, Route} from 'react-router-dom';
@@ -30,6 +30,7 @@ const styles = theme => ({
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
+    
   },
   toolbarIcon: {
     display: 'flex',
@@ -39,6 +40,7 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
+    backgroundColor: "#FFFFFF",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -63,13 +65,14 @@ const styles = theme => ({
   },
   title: {
     flexGrow: 1,
+  
   },
   drawerPaper: {
     position: 'relative',
-    
+    backgroundColor: "#295073",
     whiteSpace: 'nowrap',
     width: drawerWidth,
-    backgroundColor: '#ffffff',
+    
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -77,7 +80,7 @@ const styles = theme => ({
   },
   drawerPaperClose: {
     overflowX: 'hidden',
-    
+    backgroundColor: "#295073",
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -93,9 +96,9 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     height: '100vh',
     overflow: 'auto',
+    
   },
-
-
+ 
   h5: {
     marginBottom: theme.spacing.unit * 2,
   },
@@ -121,6 +124,7 @@ class Layout extends React.Component {
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
+          
           color="default"
           position="absolute"
           className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
@@ -151,6 +155,7 @@ class Layout extends React.Component {
           <Divider />
         </AppBar>
         <Drawer 
+          style = {{backgroundColor : '#295073'}}
           variant="permanent"
           classes={{
             paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
@@ -163,14 +168,13 @@ class Layout extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+            <DrawList/>
           <Divider />
-          <List>{secondaryListItems}</List>
+          
         </Drawer>
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Route exact path='/' component={Dashboard}/>
-           
             <Route path='/chart' component={SimpleLineChart}/>
             <Route path='/table' component={SimpleTableContainer}/>
         </main>

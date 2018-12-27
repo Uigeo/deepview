@@ -177,9 +177,9 @@ class Layout extends React.Component {
         </Drawer>
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Route exact path='/' component={Dashboard}/>
-            <Route path='/chart' component={SimpleLineChart}/>
-            <Route path='/table' component={TableContainer}/>
+            <Route exact path='/main' component={Dashboard}/>
+            <Route path='/main/chart' component={SimpleLineChart}/>
+            <Route path='/main/table' component={TableContainer}/>
             <Footer/>
         </main>
         

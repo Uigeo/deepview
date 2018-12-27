@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Layout from './view/Layout';
 import './App.css';
+import Login from './view/Login';
 
 
 
@@ -12,7 +13,8 @@ class App extends Component {
     return (
       <Router>
       <div className="App">
-        <Layout/>
+        <Route path='/login' component={Login}/>
+        <Route path='/main' component={Layout}/>
       </div>
       </Router>
     );

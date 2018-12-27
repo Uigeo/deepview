@@ -47,7 +47,7 @@ class DrawList extends React.Component {
     return (
 
       <List >
-        <Link to="/" >
+        <Link to="/main" >
           <ListItem button >
             <ListItemIcon className={classes.icon}>
               <DashboardIcon/>
@@ -57,7 +57,7 @@ class DrawList extends React.Component {
         </Link>
 
        
-        <Link to="/table">
+        <Link to="/main/table">
           <ListItem button>
             <ListItemIcon className={classes.icon}>
               <BarChartIcon />
@@ -66,7 +66,7 @@ class DrawList extends React.Component {
           </ListItem>
         </Link>
      
-        <Link to="/chart">
+        <Link to="/main/chart">
           <ListItem button onClick={this.handleClick}>
             <ListItemIcon className={classes.icon}>
               <LayersIcon />

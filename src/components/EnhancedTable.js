@@ -26,10 +26,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
-  counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
-}
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -253,7 +249,6 @@ class EnhancedTable extends React.Component {
   state = {
     order: 'asc',
     orderBy: 'upload',
-    selected: [],
     page: 0,
     rowsPerPage: 5,
   };
@@ -269,26 +264,6 @@ class EnhancedTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    this.setState({ selected: newSelected });
-  };
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -302,7 +277,7 @@ class EnhancedTable extends React.Component {
 
   render() {
     const { classes, slides } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const {  order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, slides.length - page * rowsPerPage);
 
     return (

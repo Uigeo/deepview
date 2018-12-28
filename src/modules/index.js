@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 
 import base from './base';
-import slides from './slides';
+import slide from './slides';
 import modal from './modal';
+import user from './user';
 
 export default combineReducers({
     base,
-    slides,
-    modal
+    slide,
+    modal,
+    user
 });

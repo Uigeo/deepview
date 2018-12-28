@@ -47,7 +47,7 @@ function Dashboard(props) {
       
         <Grid item xs={6} sm={3}>
           <Paper className={classes.paper}>
-          <Typography variant="h7" component="h5">
+          <Typography  component="h5">
               #Slides per yaer
           </Typography>
           <ResponsiveContainer width="99%" height={300}>

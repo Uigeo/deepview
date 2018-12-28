@@ -4,11 +4,13 @@ import EnhancedTable from '../components/EnhancedTable';
 
 class TableContainer extends Component {
     render () {
-        const { slides } = this.props;
+        const { slides, totalNum } = this.props;
 
         return (
             <div>
-                <EnhancedTable slides={slides.toJS()} />
+                <EnhancedTable 
+                    slides={slides}
+                    totalNum={totalNum} />
             </div>
         )
     }
@@ -16,6 +18,7 @@ class TableContainer extends Component {
 
 export default connect(
     (state) => ({
-        slides : state.slides
+        slide : state.slide.slides,
+        totalNum : state.slide.totalNum
     })
 )(TableContainer);

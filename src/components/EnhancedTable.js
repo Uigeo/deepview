@@ -24,8 +24,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import compose from 'recompose/compose';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as slideActions from '../modules/slides';
 
-let counter = 0;
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -37,19 +40,19 @@ function desc(a, b, orderBy) {
   return 0;
 }
 
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
+// function stableSort(array, cmp) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = cmp(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   return stabilizedThis.map(el => el[0]);
+// }
 
-function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
+// function getSorting(order, orderBy) {
+//   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+// }
 
 const rows = [
   { id: 'sname', numeric: false, disablePadding: true, label: 'Slide Name' },
@@ -68,8 +71,6 @@ class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
-
-
 
   render() {
     const {  order, orderBy} = this.props;
@@ -108,7 +109,7 @@ class EnhancedTableHead extends React.Component {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
+  
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
@@ -141,7 +142,7 @@ const toolbarStyles = theme => ({
   },
 });
 
-const pivot = ['name', 'diagnosis', 'hospital' ,'dying'];
+const pivot = ['sname', 'diagnosis', 'hospital' ,'dying'];
 
 class EnhancedTableToolbar extends React.Component {
 
@@ -161,24 +162,18 @@ class EnhancedTableToolbar extends React.Component {
   };
 
   render () {
-    const { numSelected, classes } = this.props;
+    const {  classes } = this.props;
     return (
       <div>
       <Toolbar
-        className={classNames(classes.root, {
-          [classes.highlight]: numSelected > 0,
-        })}
+        className={classNames(classes.root )}
       >
         <div className={classes.title}>
-          {numSelected > 0 ? (
-            <Typography color="inherit" variant="subtitle1">
-              {numSelected} selected
-            </Typography>
-          ) : (
+         
             <Typography variant="h6" id="tableTitle">
               Slides
             </Typography>
-          )}
+       
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
@@ -192,34 +187,33 @@ class EnhancedTableToolbar extends React.Component {
         </div>
       </Toolbar>
       <Collapse in={this.state.filterOpen}>
-
-      <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-helper">Select</InputLabel>
-          <Select
-            value={this.state.age}
-            onChange={this.handleChange}
-            input={<Input name="age" id="age-helper" />}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-                {pivot.map( (v)=>{return (<MenuItem value={v}>{v}</MenuItem>)} )}
-          </Select>
-          <FormHelperText>Some important helper text</FormHelperText>
+        <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-helper">Select</InputLabel>
+            <Select
+              value={this.state.age}
+              onChange={this.handleChange}
+              input={<Input name="age" id="age-helper" />}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+                  {pivot.map( (v)=>{return (<MenuItem value={v}>{v}</MenuItem>)} )}
+            </Select>
+            <FormHelperText>Some important helper text</FormHelperText>
         </FormControl>
         <TextField
-          id="standard-full-width"
-          label="Search"
-          style={{ margin: 8 }}
-          placeholder="Placeholder"
-          helperText="Full width!"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
+            id="standard-full-width"
+            label="Search"
+            style={{ margin: 8 }}
+            placeholder="Placeholder"
+            helperText="Full width!"
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
         />
-      </Collapse>
+        </Collapse>
       </div>
     );
   }
@@ -227,7 +221,6 @@ class EnhancedTableToolbar extends React.Component {
 
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -253,64 +246,83 @@ class EnhancedTable extends React.Component {
     rowsPerPage: 5,
   };
 
+  componentWillMount(){
+    const { slideActions, slide } = this.props;
+    slideActions.retrieveTable( 
+      this.state.rowsPerPage,
+      this.state.rowsPerPage*this.state.page,
+      this.state.orderBy,
+      this.state.order );
+    slideActions.getTotalNum();
+  }
+
   handleRequestSort = (event, property) => {
+    const { slideActions } = this.props;
     const orderBy = property;
     let order = 'desc';
 
     if (this.state.orderBy === property && this.state.order === 'desc') {
       order = 'asc';
     }
-
     this.setState({ order, orderBy });
+    slideActions.retrieveTable( 
+      this.state.rowsPerPage,
+      this.state.rowsPerPage*this.state.page,
+      this.state.orderBy,
+      this.state.order );
   };
 
 
   handleChangePage = (event, page) => {
+    const { slideActions, slide } = this.props;
+    console.log(slide.slides);
     this.setState({ page });
+    slideActions.retrieveTable( 
+      this.state.rowsPerPage,
+      this.state.rowsPerPage*(this.state.page+1),
+      this.state.orderBy,
+      this.state.order );
   };
 
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
+    slideActions.retrieveTable( 
+      this.state.rowsPerPage,
+      this.state.rowsPerPage*this.state.page,
+      this.state.orderBy,
+      this.state.order );
   };
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  
 
   render() {
-    const { classes, slides } = this.props;
-    const {  order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, slides.length - page * rowsPerPage);
+    const { classes, slide } = this.props;
+    const {  order, orderBy, rowsPerPage, page } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, slide.totalNum - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar  />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
+       
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={this.handleRequestSort}
-              rowCount={slides.length}
+              rowCount={slide.slides.length}
             />
             <TableBody>
-              {stableSort(slides, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id);
+              {slide.slides.map(n => {
                   return (
                     <TableRow
                       hover
-                      // onClick={event => this.handleClick(event, n.id)}
+                      onClick={console.log("Click")} //event => this.handleClick(event, n.id)
                       role="checkbox"
-                      aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
-                      selected={isSelected}
                     >
-
-                      <TableCell component="th" scope="row" padding="default">
-                        {n.sname}
-                      </TableCell>
+                      <TableCell component="th" scope="row" padding="default">{n.slideid}</TableCell>
                       <TableCell align="right">{n.upload}</TableCell>
                       <TableCell align="right">{n.hospital}</TableCell>
                       <TableCell align="right">{n.diagnosis}</TableCell>
@@ -329,7 +341,7 @@ class EnhancedTable extends React.Component {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={slides.length}
+          count={slide.totalNum}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
@@ -350,4 +362,14 @@ EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(EnhancedTable);
+export default compose(
+  withStyles(styles),
+  connect(
+      (state) => ({
+          slide : state.slide
+      }),
+      (dispatch) => ({
+          slideActions : bindActionCreators(slideActions, dispatch)
+      })
+  )
+)(EnhancedTable);

@@ -8,8 +8,10 @@ function getTotalSlidesNum(){
     return axios.get('http://localhost:3001/slides/total');
 }
 
-function getSlides(limit, offset){
-    return axios.get('http://localhost:3001/' + limit + '/' + offset);
+function getSlides(limit, offset, orderby, range){
+    var url = 'http://localhost:3001/slides/get/' + limit + '/' + offset+ '/' + orderby + '/' + range;
+    console.log(url);
+    return axios.get(url);
 }
 
 const RETRIEVE_PENDING = 'slide/RETRIEVE_PENDING';
@@ -21,14 +23,14 @@ const TOTALNUM_SUCCESS = 'slide/TOTALNUM_SUCCESS';
 const TOTALNUM_FAILURE = 'slide/TOTALNUM_FAILURE';
 
 
-export const retrieveTable = (limit, offset) => dispatch => {
+export const retrieveTable = (limit, offset, orderby, range) => dispatch => {
     dispatch({type : RETRIEVE_PENDING});
-
-    return getSlides(limit, offset).then(
+    console.log(limit, offset, orderby, range );
+    return getSlides(limit, offset, orderby, range).then(
         (response)=> {
             dispatch({
                 type: RETRIEVE_SUCCESS,
-                payload : response.data.slides
+                payload : response.data
             });
         }
     ).catch( error=> {
@@ -44,9 +46,10 @@ export const getTotalNum = () => dispatch => {
 
     return getTotalSlidesNum().then(
         (response)=> {
+            console.log(response.data);
             dispatch({
                 type : TOTALNUM_SUCCESS,
-                payload : response.data.totalNum
+                payload : response.data
             });
         }
     ).catch( error => {
@@ -62,67 +65,6 @@ const initialState = {
     slides: [],
     pendding : false,
 }
-
-
-
-// List([
-//     Map({
-//         "sname": 'AS-DOV12-2018',
-//         "upload": Date(2018,11,12),
-//         "hospital": "AS",
-//         "diagnosis": 4,
-//         "dying": 'A'
-//     }),
-//     Map({
-//         "sname": 'HY-AUG13-2016',
-//         "upload": Date(2016,8,13),
-//         "hospital": "HY",
-//         "diagnosis": 2,
-//         "dying": 'B'
-//     }),
-//     Map({
-//         "sname": 'KK-JUN13-2017',
-//         "upload": Date(2017,6,13),
-//         "hospital": "KK",
-//         "diagnosis": 4,
-//         "dying": 'D'
-//     }),
-//     Map({
-//         "sname": 'SS-SEP10-2016',
-//         "upload": Date(2016,9,10),
-//         "hospital": "SS",
-//         "diagnosis": 4,
-//         "dying": 'C'
-//     }),
-//     Map({
-//         "sname": 'KR-JAN23-2016',
-//         "upload": Date(2016,1,23),
-//         "hospital": "KR",
-//         "diagnosis": 5,
-//         "dying": 'B'
-//     }),
-//     Map({
-//         "sname": 'KR-FEB23-2017',
-//         "upload": Date(2017,2,23),
-//         "hospital": "KR",
-//         "diagnosis": 4,
-//         "dying": 'B'
-//     }),
-//     Map({
-//         "sname": 'KK-DEC25-2016',
-//         "upload": Date(2016,12,25),
-//         "hospital": "KR",
-//         "diagnosis": 3,
-//         "dying": 'A'
-//     }),
-//     Map({
-//         "sname": 'YS-FEB11-2018',
-//         "upload": Date(2018,2,11),
-//         "hospital": "KR",
-//         "diagnosis": 2,
-//         "dying": 'E'
-//     }),
-// ]);
 
 
 
@@ -157,7 +99,7 @@ export default handleActions({
         return {
             ...state,
             totalNum : action.payload,
-            pending : false
+            pendding : false
         }
     },
     [TOTALNUM_FAILURE] : (state, action) => {

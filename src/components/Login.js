@@ -151,10 +151,8 @@ class Login extends React.Component {
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <Fab color="primary" aria-label="Log in" className={classes.fab}>
-                                            <IconButton className={classes.icon} onClick={this.handleClick}>
-                                                <PowerSettingsNew/>
-                                            </IconButton>
+                                    <Fab color="primary" aria-label="Log in" className={classes.fab}>   
+                                        <PowerSettingsNew className={classes.icon} onClick={this.handleClick} />
                                     </Fab>
                                 </Grid>
                             </Grid>

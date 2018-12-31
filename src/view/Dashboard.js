@@ -8,6 +8,10 @@ import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend }  from 'rec
 import { className } from 'postcss-selector-parser';
 import {AreaChart, Area, PieChart, Pie} from 'recharts';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
+import compose from 'recompose/compose';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as slideActions from '../modules/slides';
 
 
 const styles = theme => ({
@@ -26,117 +30,131 @@ const styles = theme => ({
   }
 });
 
-function Dashboard(props) {
-  const { classes } = props;
 
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>
-            <Typography variant="h7" component="h5">
-              Total Number of Slides
-            </Typography>
-            <Grid container alignItems='center' justify='center' style={{height: '99%'}} >
-              <Typography variant="h2" component="h1" className={classes.total}>
-                10342#
+class Dashboard extends React.Component {
+
+  componentWillMount(){
+    const { slideActions } = this.props;
+    slideActions.retrieveTotalNum();
+    slideActions.retrieveChart('SPY');
+    slideActions.retrieveChart('SPH');
+    slideActions.retrieveChart('SPDS');
+    slideActions.retrieveChart('SPYS');
+  }
+  
+  render () {
+ 
+    const { classes, slide } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper}>
+              <Typography variant="h6" component="h5">
+                Total Number of Slides
               </Typography>
-            </Grid>
-          </Paper>
-        </Grid>
-      
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>
-          <Typography  component="h5">
-              #Slides per yaer
-          </Typography>
-          <ResponsiveContainer width="99%" height={300}>
-            <BarChart  data={bardata} margin={{top: 40, right: 0, left: 0, bottom: 0}} maxBarSize={20}>
-              <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="year" tickSize={2} height={20}/>
-                <Tooltip/>
-              <Bar dataKey="pv" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>
-            <Typography variant="h7" component="h5">
-                #Slides per Hospital
+              <Grid container alignItems='center' justify='center' style={{height: '99%'}} >
+                <Typography variant="h2" component="h1" className={classes.total}>
+                  {slide.totalNum}
+                </Typography>
+              </Grid>
+            </Paper>
+          </Grid>
+        
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper}>
+            <Typography  component="h5">
+                Slides per year
             </Typography>
-            <ResponsiveContainer width="99%" height={300} alignItems="center">
-              <PieChart  margin={{top: 40}}>
-                <Pie  isAnimationActive={true} data={piedata}  outerRadius={70} fill="#8884d8" label/>
-                <Tooltip/>
-              </PieChart>
-            </ResponsiveContainer>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>
-            <Typography variant="h7" component="h5"> #Slides per progress </Typography>
-            <ResponsiveContainer width="99%" height={300} alignItems="center">
-            <BarChart data={stackdata}
-                        margin={{top: 40, right: 10, left: 10, bottom: 0}} maxBarSize={20}>
+            <ResponsiveContainer width="99%" height={300}>
+              <BarChart  data={slide.spy} margin={{top: 40, right: 0, left: 0, bottom: 0}} maxBarSize={20}>
                 <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="progress"/>
-                <YAxis/>
-                <Tooltip/>
-                
-                <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-                <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
-                <Bar dataKey="amt" stackId="a" fill="#443a5d" />
-            </BarChart>
-            </ResponsiveContainer>
-          </Paper>
-        </Grid>
-
-      </Grid>
-      <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
-        <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}>
-          <Typography variant="h7" component="h5"> Slides rate per year </Typography>
-            <ResponsiveContainer width='99%' height={400}>
-              <AreaChart  data={data1} stackOffset="expand"
-                      margin={{top: 40, right: 0, left: 0, bottom: 0}} >
-                  <XAxis dataKey="year"/>
-                  <YAxis tickFormatter={toPercent}/>
-                  <Legend/>
+                  <XAxis dataKey="year" tickSize={2} height={20}/>
                   <Tooltip/>
-                  <Area type='monotone' dataKey='h1' stackId="1" stroke='#8884d8' fill='#8884d8' />
-                  <Area type='monotone' dataKey='h2' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-                  <Area type='monotone' dataKey='h3' stackId="1" stroke='#ffc658' fill='#ffc658' />
-              </AreaChart>
+                <Bar dataKey="count" fill="#8884d8" />
+              </BarChart>
             </ResponsiveContainer>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}>
-          <Typography variant="h7" component="h5"> Slides rate per year </Typography>
-            <ResponsiveContainer width='99%' height={400}>
-            <BarChart data={data2} layout='vertical'
-                margin={{top: 40, right: 0, left: 0, bottom: 5}}>
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis type='number' />
-                <YAxis  dataKey="hospital" type='category'/>
-                <Tooltip/>
-                <Legend />
-                <Bar dataKey="p1" fill="#8884d8" />
-                <Bar dataKey="p2" fill="#82ca9d" />
-                <Bar dataKey="p3" fill="#441233" />
-            </BarChart>
-            </ResponsiveContainer>
-          </Paper>
-        </Grid>
-      </Grid>
+            </Paper>
+          </Grid>
 
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper}>
+              <Typography variant="h7" component="h5">
+                  #Slides per Hospital
+              </Typography>
+              <ResponsiveContainer width="99%" height={300} alignItems="center">
+                <PieChart  margin={{top: 40}}>
+          
+                  <Pie  isAnimationActive={true} data={slide.sph} outerRadius={70} fill="#8884d8" label/>
+                  <Tooltip/>
+                </PieChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
 
-    </div>
-  );
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper}>
+              <Typography variant="h7" component="h5"> #Slides per progress </Typography>
+              <ResponsiveContainer width="99%" height={300} alignItems="center">
+              <BarChart data={stackdata}
+                          margin={{top: 40, right: 10, left: 10, bottom: 0}} maxBarSize={20}>
+                  <CartesianGrid strokeDasharray="3 3"/>
+                  <XAxis dataKey="progress"/>
+                  <YAxis/>
+                  <Tooltip/>
+                  
+                  <Bar dataKey="pv" stackId="a" fill="#8884d8" />
+                  <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+                  <Bar dataKey="amt" stackId="a" fill="#443a5d" />
+              </BarChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
+
+        </Grid>
+        <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
+          <Grid item xs={12} sm={6}>
+            <Paper className={classes.paper}>
+            <Typography variant="h7" component="h5"> Slides rate per year </Typography>
+              <ResponsiveContainer width='99%' height={400}>
+                <AreaChart  data={data1} stackOffset="expand"
+                        margin={{top: 40, right: 0, left: 0, bottom: 0}} >
+                    <XAxis dataKey="year"/>
+                    <YAxis tickFormatter={toPercent}/>
+                    <Legend/>
+                    <Tooltip/>
+                    <Area type='monotone' dataKey='h1' stackId="1" stroke='#8884d8' fill='#8884d8' />
+                    <Area type='monotone' dataKey='h2' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
+                    <Area type='monotone' dataKey='h3' stackId="1" stroke='#ffc658' fill='#ffc658' />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Paper className={classes.paper}>
+            <Typography variant="h7" component="h5"> Slides rate per year </Typography>
+              <ResponsiveContainer width='99%' height={400}>
+              <BarChart data={data2} layout='vertical'
+                  margin={{top: 40, right: 0, left: 0, bottom: 5}}>
+                  <CartesianGrid strokeDasharray="3 3"/>
+                  <XAxis type='number' />
+                  <YAxis  dataKey="hospital" type='category'/>
+                  <Tooltip/>
+                  <Legend />
+                  <Bar dataKey="p1" fill="#8884d8" />
+                  <Bar dataKey="p2" fill="#82ca9d" />
+                  <Bar dataKey="p3" fill="#441233" />
+              </BarChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
+        </Grid>
+      </div>
+    )
+  }
 }
+
 
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -152,8 +170,18 @@ const toPercent = (decimal, fixed = 0) => {
 	return `${(decimal * 100).toFixed(fixed)}%`;
 };
 
-export default withStyles(styles)(Dashboard);
 
+export default compose(
+  withStyles(styles),
+  connect(
+      (state) => ({
+          slide : state.slide,
+      }),
+      (dispatch) => ({
+          slideActions : bindActionCreators(slideActions, dispatch)
+      })
+  )
+)(Dashboard);
 
 
 
@@ -167,12 +195,12 @@ const bardata = [
 
 
 const piedata = [
-	{name: 'Group A', value: 400}, 
-  {name: 'Group B', value: 300},
-  {name: 'Group C', value: 300}, 
-  {name: 'Group D', value: 200},
-  {name: 'Group E', value: 278}, 
-  {name: 'Group F', value: 189}
+	{name: "Group A", value: 400}, 
+  {name: "Group B", value: 300},
+  {name: "Group C", value: 300}, 
+  {name: "Group D", value: 200},
+  {name: "Group E", value: 278}, 
+  {name: "Group F", value: 189}
   ];
 
   const stackdata = [

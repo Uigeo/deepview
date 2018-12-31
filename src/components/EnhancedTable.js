@@ -40,22 +40,9 @@ function desc(a, b, orderBy) {
   return 0;
 }
 
-// function stableSort(array, cmp) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = cmp(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   return stabilizedThis.map(el => el[0]);
-// }
-
-// function getSorting(order, orderBy) {
-//   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-// }
 
 const rows = [
-  { id: 'sname', numeric: false, disablePadding: true, label: 'Slide Name' },
+  { id: 'slideid', numeric: false, disablePadding: true, label: 'Slide Name' },
   { id: 'upload', numeric: true, disablePadding: false, label: 'Upload Date' },
   { id: 'hospital', numeric: false, disablePadding: false, label: 'Hospital' },
   { id: 'diagnosis', numeric: true, disablePadding: false, label: 'Diagnosis' },
@@ -142,13 +129,13 @@ const toolbarStyles = theme => ({
   },
 });
 
-const pivot = ['sname', 'diagnosis', 'hospital' ,'dying'];
+const pivot = ['slideid', 'diagnosis', 'hospital' ,'dying'];
 
 class EnhancedTableToolbar extends React.Component {
 
   state = {
     filterOpen : false,
-    pivot : 'sname'
+    pivot : 'slideid'
   }
 
   handleFilterClick = () => {
@@ -253,13 +240,14 @@ class EnhancedTable extends React.Component {
       this.state.rowsPerPage*this.state.page,
       this.state.orderBy,
       this.state.order );
-    slideActions.getTotalNum();
+    slideActions.retrieveTotalNum();
   }
 
   handleRequestSort = (event, property) => {
     const { slideActions } = this.props;
     const orderBy = property;
     let order = 'desc';
+    console.log(property);
 
     if (this.state.orderBy === property && this.state.order === 'desc') {
       order = 'asc';
@@ -268,14 +256,13 @@ class EnhancedTable extends React.Component {
     slideActions.retrieveTable( 
       this.state.rowsPerPage,
       this.state.rowsPerPage*this.state.page,
-      this.state.orderBy,
-      this.state.order );
+      orderBy,
+      order );
   };
 
 
   handleChangePage = (event, page) => {
-    const { slideActions, slide } = this.props;
-    console.log(slide.slides);
+    const { slideActions } = this.props;
     this.setState({ page });
     slideActions.retrieveTable( 
       this.state.rowsPerPage,
@@ -285,10 +272,12 @@ class EnhancedTable extends React.Component {
   };
 
   handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
+    let rpp = event.target.value;
+    const { slideActions, slide } = this.props;
+    this.setState({ rowsPerPage: rpp });
     slideActions.retrieveTable( 
-      this.state.rowsPerPage,
-      this.state.rowsPerPage*this.state.page,
+      rpp,
+      rpp*this.state.page,
       this.state.orderBy,
       this.state.order );
   };

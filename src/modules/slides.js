@@ -35,21 +35,24 @@ const RETRIEVE_CHART_PENDING = {
     SPD : 'slide/RETRIEVE_SPD_PENDING',
     SPH : 'slide/RETRIEVE_SPH_PENDING',
     SPYS : 'slide/RETRIEVE_SPYS_PENDING',
-    SPDS : 'slide/RETRIEVE_SPDS_PENDING'
+    SPDS : 'slide/RETRIEVE_SPDS_PENDING',
+    SPHS : 'slide/RETRIEVE_SPHS_PENDING'
 }; 
 const RETRIEVE_CHART_SUCCESS = {
     SPY : 'slide/RETRIEVE_SPY_SUCCESS',
     SPD : 'slide/RETRIEVE_SPD_SUCCESS',
     SPH : 'slide/RETIREVE_SPH_SUCCESS',
     SPYS : 'slide/RETRIEVE_SPYS_SUCCESS',
-    SPDS : 'slide/RETRIEVE_SPDS_SUCCESS'
+    SPDS : 'slide/RETRIEVE_SPDS_SUCCESS',
+    SPHS : 'slide/RETRIEVE_SPHS_SUCCESS'
 };
 const RETRIEVE_CHART_FAILURE = {
     SPY : 'slide/RETRIEVE_SPY_FAILURE',
     SPD : 'slide/RETRIEVE_SPD_FAILURE',
     SPH : 'slide/RETRIEVE_SPH_FAILURE',
     SPYS : 'slide/RETRIEVE_SPYS_FAILURE',
-    SPDS : 'slide/RETRIEVE_SPDS_FAILURE'
+    SPDS : 'slide/RETRIEVE_SPDS_FAILURE',
+    SPHS : 'slide/RETRIEVE_SPHS_FAILURE'
 };
 
 export const retrieveTable = (limit, offset, orderby, range) => dispatch => {
@@ -122,7 +125,9 @@ const initialState = {
     spds : [],
     spdsPending : false,
     spys : [],
-    spyspending : false
+    spysPending : false,
+    sphs : [],
+    sphsPending : false,
 }
 
 export default handleActions({
@@ -257,6 +262,25 @@ export default handleActions({
         return {
             ...state,
             spysPending : false
+        }
+    },
+    [RETRIEVE_CHART_PENDING['SPHS']] : (state, action) => {
+        return {
+            ...state,
+            sphsPending : true
+        }
+    },
+    [RETRIEVE_CHART_SUCCESS['SPHS']] : (state, action) => {
+        return {
+            ...state,
+            sphs : action.payload,
+            sphsPending : false
+        }
+    },
+    [RETRIEVE_CHART_FAILURE['SPHS']] : (state, action) => {
+        return {
+            ...state,
+            sphsPending : false
         }
     }
 

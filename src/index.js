@@ -7,8 +7,10 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './modules';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
+import storeSynchronize from 'redux-localstore';
 
 const store = createStore(reducers, applyMiddleware(ReduxThunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+storeSynchronize(store);
 
 ReactDOM.render(
     <Provider store={store} >

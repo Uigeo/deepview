@@ -40,6 +40,7 @@ class Dashboard extends React.Component {
     slideActions.retrieveChart('SPH');
     slideActions.retrieveChart('SPDS');
     slideActions.retrieveChart('SPYS');
+    slideActions.retrieveChart('SPHS');
   }
   
   render () {
@@ -86,7 +87,7 @@ class Dashboard extends React.Component {
               <ResponsiveContainer width="99%" height={300} alignItems="center">
                 <PieChart  margin={{top: 40}}>
           
-                  <Pie  isAnimationActive={true} data={slide.sph} outerRadius={70} fill="#8884d8" label/>
+                  <Pie  isAnimationActive={true}  data={slide.sph} outerRadius={70} fill="#8884d8" label/>
                   <Tooltip/>
                 </PieChart>
               </ResponsiveContainer>
@@ -95,18 +96,19 @@ class Dashboard extends React.Component {
 
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>
-              <Typography variant="h7" component="h5"> #Slides per progress </Typography>
+              <Typography variant="h7" component="h5"> #Slides per diagnosis </Typography>
               <ResponsiveContainer width="99%" height={300} alignItems="center">
-              <BarChart data={stackdata}
+              <BarChart data={slide.spds}
                           margin={{top: 40, right: 10, left: 10, bottom: 0}} maxBarSize={20}>
                   <CartesianGrid strokeDasharray="3 3"/>
-                  <XAxis dataKey="progress"/>
+                  <XAxis dataKey="diagnosis"/>
                   <YAxis/>
                   <Tooltip/>
                   
-                  <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-                  <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
-                  <Bar dataKey="amt" stackId="a" fill="#443a5d" />
+                  <Bar dataKey="AS" stackId="a" fill="#8884d8" />
+                  <Bar dataKey="HY" stackId="a" fill="#82ca9d" />
+                  <Bar dataKey="KR" stackId="a" fill="#443a5d" />
+                  <Bar dataKey="SE" stackId="a" fill="#223f4d" />
               </BarChart>
               </ResponsiveContainer>
             </Paper>
@@ -118,15 +120,16 @@ class Dashboard extends React.Component {
             <Paper className={classes.paper}>
             <Typography variant="h7" component="h5"> Slides rate per year </Typography>
               <ResponsiveContainer width='99%' height={400}>
-                <AreaChart  data={data1} stackOffset="expand"
+                <AreaChart  data={slide.spys} stackOffset="expand"
                         margin={{top: 40, right: 0, left: 0, bottom: 0}} >
                     <XAxis dataKey="year"/>
                     <YAxis tickFormatter={toPercent}/>
                     <Legend/>
                     <Tooltip/>
-                    <Area type='monotone' dataKey='h1' stackId="1" stroke='#8884d8' fill='#8884d8' />
-                    <Area type='monotone' dataKey='h2' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-                    <Area type='monotone' dataKey='h3' stackId="1" stroke='#ffc658' fill='#ffc658' />
+                    <Area type='monotone' dataKey='AS' stackId="1" stroke='#8884d8' fill='#8884d8' />
+                    <Area type='monotone' dataKey='HY' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
+                    <Area type='monotone' dataKey='KR' stackId="1" stroke='#ffc658' fill='#ffc658' />
+                    <Area type='monotone' dataKey='SE' stackId="1" stroke='#ffc658' fill='#11c658' />
                 </AreaChart>
               </ResponsiveContainer>
             </Paper>
@@ -135,16 +138,18 @@ class Dashboard extends React.Component {
             <Paper className={classes.paper}>
             <Typography variant="h7" component="h5"> Slides rate per year </Typography>
               <ResponsiveContainer width='99%' height={400}>
-              <BarChart data={data2} layout='vertical'
+              <BarChart data={slide.sphs} layout='vertical'
                   margin={{top: 40, right: 0, left: 0, bottom: 5}}>
                   <CartesianGrid strokeDasharray="3 3"/>
                   <XAxis type='number' />
                   <YAxis  dataKey="hospital" type='category'/>
                   <Tooltip/>
                   <Legend />
-                  <Bar dataKey="p1" fill="#8884d8" />
-                  <Bar dataKey="p2" fill="#82ca9d" />
-                  <Bar dataKey="p3" fill="#441233" />
+                  <Bar dataKey="G1" fill="#8884d8" />
+                  <Bar dataKey="G2" fill="#82ca9d" />
+                  <Bar dataKey="G3" fill="#441233" />
+                  <Bar dataKey="G4" fill="#221387" />
+                  <Bar dataKey="G5" fill="#14DDEE" />
               </BarChart>
               </ResponsiveContainer>
             </Paper>

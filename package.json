@@ -20,6 +20,7 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
+    "redux-localstore": "^0.4.0",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {

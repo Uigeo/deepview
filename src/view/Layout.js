@@ -19,6 +19,7 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Dashboard from './Dashboard';
 import TableContainer from '../containers/TableContainer';
 import Footer from './Footer';
+import ProfileMenu from '../components/ProfileMenu';
 
 
 const drawerWidth = 240;
@@ -153,6 +154,8 @@ class Layout extends React.Component {
             >
               DeepBio
             </Typography>
+
+            <ProfileMenu/>
            
           </Toolbar>
           <Divider />

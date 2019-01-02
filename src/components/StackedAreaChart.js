@@ -1,12 +1,12 @@
 import React ,{Component} from 'react';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
-import LineChart from 'recharts/lib/chart/LineChart';
-import Line from 'recharts/lib/cartesian/Line';
+import AreaChart from 'recharts/lib/chart/AreaChart';
+import Area from 'recharts/lib/cartesian/Area';
 import XAxis from 'recharts/lib/cartesian/XAxis';
 import YAxis from 'recharts/lib/cartesian/YAxis';
 import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
-import Legend from 'recharts/lib/component/Legend';
+
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -22,10 +22,10 @@ const styles = theme => ({
 const stroke = [ "#82ca9d" , "#8884d8", "#4484d8", "#113458", "#41aff8", "#ff84d8" ];
 
 // Line Type, data key, stroke, active Dot
-class SimpleLineChart extends Component {
+class StackedAreaChart extends Component {
   render () {
 
-    const { classes, data , xDataKey ,type, width, height, dot, tableName } = this.props;
+    const { classes, data , xDataKey ,type, width, height, tableName } = this.props;
 
     return (
       <div>
@@ -34,16 +34,16 @@ class SimpleLineChart extends Component {
       </Typography>
       <Typography component="div" className={classes.chartContainer}>
         <ResponsiveContainer width={width} height={height}>
-          <LineChart data={data} margin={{top: 10, right: 30, left: 0, bottom: 0}} >
-            <XAxis dataKey={xDataKey} />
-            <YAxis />
-            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-            <Tooltip />
-            <Legend />
-            {data.length !== 0 && Object.keys(data[0]).map( (v, i)=> {
-              if(i !== 0) return (<Line key={i-1} type={type} dataKey={v} stroke={stroke[i-1]} activeDot={{r:dot}} />);   })
-            }
-          </LineChart>
+            <AreaChart  data={data} margin={{top: 10, right: 30, left: 30, bottom: 0}}>
+            <CartesianGrid strokeDasharray="3 3"/>
+            <XAxis dataKey={xDataKey}/>
+            <YAxis/>
+            <Tooltip/>
+            {  data.length !== 0 && Object.keys(data[0]).map( (v, i)=>{
+                if( i !== 0 ) return (
+                    <Area key={i-1} type={type} dataKey={v} stackId='1' stroke={stroke[i-1]} fill={stroke[i-1]} />
+                )}) }
+        </AreaChart>
         </ResponsiveContainer>
       </Typography>
       </div>
@@ -51,21 +51,19 @@ class SimpleLineChart extends Component {
   }
 }
 
-SimpleLineChart.defaultProps = {
+StackedAreaChart.defaultProps = {
   width : "99%",
   height : 350,
-  dot : 7,
-  data : undefined
+
 }
 
-SimpleLineChart.propTypes = {
+StackedAreaChart.propTypes = {
   classes: PropTypes.object.isRequired,
   data : PropTypes.array.isRequired,
   xDataKey : PropTypes.string.isRequired,
   type : PropTypes.string.isRequired,
   tableName : PropTypes.string.isRequired,
-  dot : PropTypes.number,
 };
 
 
-export default  withStyles(styles)(SimpleLineChart);
+export default  withStyles(styles)(StackedAreaChart);

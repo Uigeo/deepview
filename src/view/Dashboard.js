@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend }  from 'recharts';
-import { className } from 'postcss-selector-parser';
+//import { className } from 'postcss-selector-parser';
 import {AreaChart, Area, PieChart, Pie} from 'recharts';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
 import compose from 'recompose/compose';
@@ -86,7 +86,6 @@ class Dashboard extends React.Component {
               </Typography>
               <ResponsiveContainer width="99%" height={300} alignItems="center">
                 <PieChart  margin={{top: 40}}>
-          
                   <Pie  isAnimationActive={true}  data={slide.sph} outerRadius={70} fill="#8884d8" label/>
                   <Tooltip/>
                 </PieChart>
@@ -165,11 +164,6 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const getPercent = (value, total) => {
-	const ratio = total > 0 ? value / total : 0;
-  
-  return toPercent(ratio, 2);
-};
 
 const toPercent = (decimal, fixed = 0) => {
 	return `${(decimal * 100).toFixed(fixed)}%`;
@@ -188,48 +182,3 @@ export default compose(
   )
 )(Dashboard);
 
-
-
-const bardata = [
-  {year: '2015', pv: 4000, },
-  {year: '2016', pv: 3000, },
-  {year: '2017', pv: 2000, },
-  {year: '2018', pv: 2780, },
-  {year: '2019', pv: 1890, },
-];
-
-
-const piedata = [
-	{name: "Group A", value: 400}, 
-  {name: "Group B", value: 300},
-  {name: "Group C", value: 300}, 
-  {name: "Group D", value: 200},
-  {name: "Group E", value: 278}, 
-  {name: "Group F", value: 189}
-  ];
-
-  const stackdata = [
-    {progress: '1', uv: 4000, pv: 2400, amt: 2400},
-    {progress: '2', uv: 3000, pv: 1398, amt: 2210},
-    {progress: '3', uv: 2000, pv: 9800, amt: 2290},
-    {progress: '4', uv: 2780, pv: 3908, amt: 2000},
-    {progress: '5', uv: 1890, pv: 4800, amt: 2181},
-];
-
-const data1 = [
-    {year: '2014', h1: 4000, h2: 2400, h3: 2400},
-    {year: '2015', h1: 3000, h2: 1398, h3: 2210},
-    {year: '2016', h1: 2000, h2: 9800, h3: 2290},
-    {year: '2017', h1: 2780, h2: 3908, h3: 2000},
-    {year: '2018', h1: 1890, h2: 4800, h3: 2181},
-];
-
-const data2 = [
-    {hospital: 'AS', p1: 4000, p2: 2400, p3: 2400, p4:1000},
-    {hospital: 'SS', p1: 3000, p2: 1398, p3: 2210, p4:1242},
-    {hospital: 'HY', p1: 2000, p2: 9800, p3: 2290, p4:1421},
-    {hospital: 'KR', p1: 2780, p2: 3908, p3: 2000, p4:2444},
-    {hospital: 'YS', p1: 1890, p2: 4800, p3: 2181, p4:3433},
-    {hospital: 'SU', p1: 2390, p2: 3800, p3: 2500, p4:2423},
-    {hospital: 'KA', p1: 3490, p2: 4300, p3: 2100, p4:3111} 
-];

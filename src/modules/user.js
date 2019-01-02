@@ -1,5 +1,5 @@
-import { Map, List } from 'immutable';
-import { createAction, handleActions } from 'redux-actions';
+
+import {  handleActions } from 'redux-actions';
 import axios from 'axios';
 import {defineState, resetState} from 'redux-localstore';
 
@@ -22,7 +22,7 @@ export const login = (id, pw) => dispatch => {
     return getUser(id, pw).then(
         (response)=> {
             console.log(response.data.users);
-            if(response.data.users.length !=0){
+            if(response.data.users.length !==0){
                 dispatch({
                     type: LOGIN_SUCCESS,
                     payload : response.data.users[0]

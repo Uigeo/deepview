@@ -1,23 +1,29 @@
 //import { Map, List } from 'immutable';
-import { createAction, handleActions } from 'redux-actions';
+import {  handleActions } from 'redux-actions';
 import axios from 'axios';
 
 const host = 'http://localhost:';
 const port = '3001';
 
-
+// host + port  + 
 function getTotalSlidesNum(){
-    return axios.get(host + port  + '/slides/total');
+    return axios.get('/slides/total');
 }
-
+// host + port  +
 function getSlides(limit, offset, orderby, range){
-    var url = host + port  + '/slides/get/' + limit + '/' + offset+ '/' + orderby + '/' + range;
+    var url =  '/slides/get/' + limit + '/' + offset+ '/' + orderby + '/' + range;
     console.log(url);
     return axios.get(url);
 }
-
+//host + port  +
 function getChart(chart){
-    var url = host + port  + '/slides/chart/'+ chart;
+    var url =  '/slides/chart/'+ chart;
+    return axios.get(url);
+}
+
+function searchSlide( pivot, keyword, limit, offset ){
+    var url =  '/slides/search/' + pivot + '/' + keyword + '/' + limit + '/' + offset;
+    console.log(url);
     return axios.get(url);
 }
 
@@ -29,6 +35,7 @@ const RETRIEVE_FAILURE = 'slide/RETRIEVE_FAILURE';
 const TOTALNUM_PENDING = 'slide/TOTALNUM_PENDING';
 const TOTALNUM_SUCCESS = 'slide/TOTALNUM_SUCCESS';
 const TOTALNUM_FAILURE = 'slide/TOTALNUM_FAILURE';
+
 
 const RETRIEVE_CHART_PENDING = {
     SPY : 'slide/RETRIEVE_SPY_PENDING',
@@ -108,6 +115,24 @@ export const retrieveChart = (chart) => dispatch => {
             type : RETRIEVE_CHART_FAILURE[chart]
         })
     });
+}
+
+export const search = ( pivot , keyword, limit, offset ) => dispatch => {
+    dispatch({type : RETRIEVE_PENDING});
+
+    return searchSlide( pivot, keyword, limit, offset ).then(
+        (response)=> {
+            console.log(response.data);
+            dispatch({
+                type : RETRIEVE_SUCCESS,
+                payload : response.data
+            });
+        }
+    ).catch(
+        dispatch({
+            type : RETRIEVE_FAILURE
+        })
+    );
 }
 
 
@@ -282,7 +307,8 @@ export default handleActions({
             ...state,
             sphsPending : false
         }
-    }
+    },
+
 
 
     // [CREATE]: (state, action) => {

@@ -13,13 +13,13 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DrawList from './DrawList';
-import SimpleLineChart from '../components/SimpleLineChart';
+import EnhancedTable from '../components/EnhancedTable';
 
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import {  Route} from 'react-router-dom';
 import Dashboard from './Dashboard';
-import TableContainer from '../containers/TableContainer';
 import Footer from './Footer';
 import ProfileMenu from '../components/ProfileMenu';
+import TablePage from './TablePage';
 
 
 const drawerWidth = 240;
@@ -181,8 +181,8 @@ class Layout extends React.Component {
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Route exact path='/' component={Dashboard}/>
-            <Route path='/chart' component={SimpleLineChart}/>
-            <Route path='/table' component={TableContainer}/>
+            <Route path='/chart' component={TablePage}/>
+            <Route path='/table' component={EnhancedTable}/>
             <Footer/>
         </main>
         

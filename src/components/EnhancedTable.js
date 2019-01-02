@@ -18,6 +18,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { Collapse, TextField } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
+import Grid from '@material-ui/core/Grid';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -28,17 +29,6 @@ import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as slideActions from '../modules/slides';
-
-
-function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
 
 
 const rows = [
@@ -135,25 +125,36 @@ class EnhancedTableToolbar extends React.Component {
 
   state = {
     filterOpen : false,
-    pivot : 'slideid'
+    pivot : 'slideid',
+    keyword : '',
+    offset : 0,
+    limit : 100,
   }
 
   handleFilterClick = () => {
     this.setState( state => ({filterOpen : !state.filterOpen}));
   }
 
-  handleChange = name => event => {
+  handleChange = event => {
     this.setState({
-      [name]: event.target.value,
+      [event.target.name]: event.target.value,
     });
   };
+
+  handleKeyPress = (e)=> {
+    const { slideActions } = this.props;
+    const {pivot, keyword, offset, limit} = this.state;
+    if(e.charCode===13) {
+        slideActions.search(pivot, keyword, limit, offset);
+    }
+  }
 
   render () {
     const {  classes } = this.props;
     return (
       <div>
       <Toolbar
-        className={classNames(classes.root )}
+        className={classes.root}
       >
         <div className={classes.title}>
          
@@ -174,32 +175,37 @@ class EnhancedTableToolbar extends React.Component {
         </div>
       </Toolbar>
       <Collapse in={this.state.filterOpen}>
-        <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-helper">Select</InputLabel>
-            <Select
-              value={this.state.age}
+    
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-helper">Select</InputLabel>
+              <Select
+              
+                value={this.state.pivot}
+                onChange={this.handleChange}
+                input={<Input name="pivot" />}
+              >
+                <MenuItem value=""><em>None</em></MenuItem>
+                    {pivot.map( (v)=>{return (<MenuItem value={v}>{v}</MenuItem>)} )}
+              </Select>
+              <FormHelperText>Some important helper text</FormHelperText>
+          </FormControl>
+      
+          <TextField
+              id="standard-full-width"
+              label="Search"
+              name='keyword'
+              style={{ margin: 8 }}
+              placeholder="keyword"
+              helperText="Full width!"
+              fullWidth
+              onKeyPress={this.handleKeyPress}
               onChange={this.handleChange}
-              input={<Input name="age" id="age-helper" />}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-                  {pivot.map( (v)=>{return (<MenuItem value={v}>{v}</MenuItem>)} )}
-            </Select>
-            <FormHelperText>Some important helper text</FormHelperText>
-        </FormControl>
-        <TextField
-            id="standard-full-width"
-            label="Search"
-            style={{ margin: 8 }}
-            placeholder="Placeholder"
-            helperText="Full width!"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-        />
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+          />
+     
         </Collapse>
       </div>
     );
@@ -210,7 +216,20 @@ EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
+EnhancedTableToolbar = compose(
+  withStyles(toolbarStyles),
+  connect(
+      (state) => ({
+          slide : state.slide
+      }),
+      (dispatch) => ({
+          slideActions : bindActionCreators(slideActions, dispatch)
+      })
+  )
+)(EnhancedTableToolbar);
+
+
+
 
 const styles = theme => ({
   root: {
@@ -230,11 +249,11 @@ class EnhancedTable extends React.Component {
     order: 'asc',
     orderBy: 'upload',
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: 10,
   };
 
   componentWillMount(){
-    const { slideActions, slide } = this.props;
+    const { slideActions } = this.props;
     slideActions.retrieveTable( 
       this.state.rowsPerPage,
       this.state.rowsPerPage*this.state.page,
@@ -273,7 +292,7 @@ class EnhancedTable extends React.Component {
 
   handleChangeRowsPerPage = event => {
     let rpp = event.target.value;
-    const { slideActions, slide } = this.props;
+    const { slideActions } = this.props;
     this.setState({ rowsPerPage: rpp });
     slideActions.retrieveTable( 
       rpp,

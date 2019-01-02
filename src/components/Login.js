@@ -1,17 +1,11 @@
 import React from 'react'
-import { withStyles, Grid, Paper, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import Input from '@material-ui/core/Input';
-import InputBase from '@material-ui/core/InputBase';
-import InputLabel from '@material-ui/core/InputLabel';
+import { withStyles, Grid, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
 import orange from '@material-ui/core/colors/orange';
 import Typography from '@material-ui/core/Typography';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import Fab from '@material-ui/core/Fab';
-import IconButton from '@material-ui/core/IconButton';
 import * as userActions from '../modules/user';
 import { withRouter } from 'react-router-dom';
 import compose from 'recompose/compose';
@@ -19,7 +13,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 
-const logoimgURL='http://172.17.0.1:9000/assets/logo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20181228%2F%2Fs3%2Faws4_request&X-Amz-Date=20181228T001927Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=36310fdac98fc5666d48dcf8a4402165b33a0d87b12457589164b4ed175b3830';
+//const logoimgURL='http://172.17.0.1:9000/assets/logo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20181228%2F%2Fs3%2Faws4_request&X-Amz-Date=20181228T001927Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=36310fdac98fc5666d48dcf8a4402165b33a0d87b12457589164b4ed175b3830';
 
 const style = theme => ({
    
@@ -82,10 +76,7 @@ class Login extends React.Component {
             id :this.state.id,
             pw : this.state.pw
         }
-        console.log(login);
         this.userLogin(login.id, login.pw);
-
-        console.log(user);
 
         this.pwInput.value = '';
         this.idInput.value = '';

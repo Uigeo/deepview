@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,7 +18,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { Collapse, TextField } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
+//import Grid from '@material-ui/core/Grid';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -29,6 +29,8 @@ import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as slideActions from '../modules/slides';
+import * as modalActions from '../modules/modal';
+import SlideModal from './SlideModal'
 
 
 const rows = [
@@ -301,7 +303,13 @@ class EnhancedTable extends React.Component {
       this.state.order );
   };
 
-  
+  handleClick = ( slide ) =>{
+    const { modalActions } = this.props;
+    console.log("handle", slide);
+    modalActions.change(slide);
+    modalActions.show();
+  }
+
 
   render() {
     const { classes, slide } = this.props;
@@ -310,6 +318,7 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
+        <SlideModal top={70} left={70} width={800} height={800}/>
         <EnhancedTableToolbar  />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
@@ -321,14 +330,13 @@ class EnhancedTable extends React.Component {
               rowCount={slide.slides.length}
             />
             <TableBody>
-              {slide.slides.map(n => {
+              {slide.slides.map( (n ,i) => {
                   return (
                     <TableRow
                       hover
-                      onClick={console.log("Click")} //event => this.handleClick(event, n.id)
-                      role="checkbox"
+                      onClick={ ()=>{this.handleClick(n)}} //event => this.handleClick(event, n.id)
                       tabIndex={-1}
-                      key={n.id}
+                      key={i}
                     >
                       <TableCell component="th" scope="row" padding="default">{n.slideid}</TableCell>
                       <TableCell align="right">{n.upload}</TableCell>
@@ -374,10 +382,12 @@ export default compose(
   withStyles(styles),
   connect(
       (state) => ({
-          slide : state.slide
+          slide : state.slide,
+          modal : state.modal
       }),
       (dispatch) => ({
-          slideActions : bindActionCreators(slideActions, dispatch)
+          slideActions : bindActionCreators(slideActions, dispatch),
+          modalActions : bindActionCreators(modalActions, dispatch)
       })
   )
 )(EnhancedTable);

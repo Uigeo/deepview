@@ -33,13 +33,10 @@ class ActivePieChart extends Component {
     }
     
   render () {
-    const { classes, data , innerRadius, outerRadius, fill, width, height,  tableName } = this.props;
+    const { classes, data , innerRadius, outerRadius, fill, width, height } = this.props;
 
     return (
       <div>
-        <Typography variant="h4" gutterBottom component="h2">
-        {tableName}
-      </Typography>
         <ResponsiveContainer width={width} height={height} >
             { data.length != 0 && 
             <PieChart >
@@ -95,7 +92,7 @@ const renderActiveShape = (props) => {
   
     return (
       <g>
-        <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+        <text fontSize={30} x={cx} y={cy} dy={5} textAnchor="middle" fill={fill}>{payload.name}</text>
         <Sector
           cx={cx}
           cy={cy}
@@ -116,8 +113,8 @@ const renderActiveShape = (props) => {
         />
         <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
         <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`#${value}`}</text>
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+        <text fontSize={20} x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`#${value}`}</text>
+        <text fontSize={20} x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
           {`(Rate ${(percent * 100).toFixed(2)}%)`}
         </text>
       </g>

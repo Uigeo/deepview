@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as modalActions from '../modules/modal';
 import ImageViewer from '../components/ImageViewer';
+import colorPalette from '../colorPalette';
 
 const styles = theme => ({
     paper: {
@@ -18,6 +19,14 @@ const styles = theme => ({
       padding: theme.spacing.unit * 4,
       outline: 'none',
     },
+    colorbar : {
+        width : '100%',
+        height : 5,
+        backgroundColor : colorPalette[1]
+    },
+    root : {
+        padding : '0px 0px 0px 0px'
+    }
   });
 
 class SlideModal extends Component {
@@ -35,8 +44,9 @@ class SlideModal extends Component {
 
         return (
       
-                <Modal style={{top:top, left:left}} open={modal.visible} onClose={this.handleClose}>
-                <div style={{width:width, height:height}} className={classes.paper}>
+                <Modal style={{top:top, left:left}} open={modal.visible} onClose={this.handleClose} >
+              
+                <div style={{width:width, height:height, paddingBottom : 100}} className={classes.paper}>
                     <Typography variant="h6" id="modal-title">
                     Text in a modal
                     </Typography>
@@ -44,9 +54,9 @@ class SlideModal extends Component {
                         {modal.slide.slideid}
                     </Typography>
                     <ImageViewer 
-                    width='99%'
+                    width='100%'
                     height='99%'
-                    image="http://www.planwallpaper.com/static/images/HD-Wallpapers1_FOSmVKg.jpeg"
+                    image={modal.slide.imgpath}
                      />
                 </div>
                 </Modal>
@@ -61,8 +71,8 @@ SlideModal.propTypes = {
 SlideModal.defaultProps = {
     width : 300,
     height : 300,
-    top : 50,
-    left : 40,
+    top : 80,
+    left : 200,
 }
 
 export default compose(

@@ -7,7 +7,7 @@ import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 import Replay from '@material-ui/icons/Replay';
 import PageviewOutlined from '@material-ui/icons/PageviewOutlined';
 import Fab from '@material-ui/core/Fab';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
     navigator : {
@@ -36,6 +36,10 @@ const loadImage = (src)=> new Promise(function(resolve, reject) {
                
   class ImageViewer extends React.Component {
   
+    state = {
+        pending : false
+    }
+
       constructor(props) {
           super(props)
       }
@@ -57,11 +61,10 @@ const loadImage = (src)=> new Promise(function(resolve, reject) {
                     </Fab>
                     <Fab id="full-page" color="primary" aria-label="page" className={classes.fab}>
                         <PageviewOutlined className={classes.extendedIcon}/>
-                    </Fab>
-                    
+                    </Fab>   
                 </div>
-         
-                  <div className="openseadragon" style={{width : '99%', height: '99%'}} id={id}></div>
+                 
+                    <div className="openseadragon" style={{width : '100%', height: '99%'}} id={id}>{ this.state.pending && <CircularProgress /> }</div>
               </div>
           )
       }
@@ -70,6 +73,9 @@ const loadImage = (src)=> new Promise(function(resolve, reject) {
           let self = this
           let { id, image, type } = this.props
           loadImage(image).then(data =>{
+              this.setState({
+                  pending : false
+              });
               self.viewer =  OpenSeadragon({
                   element: id,
                   visibilityRatio: 1.0,

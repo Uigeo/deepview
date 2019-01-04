@@ -3,6 +3,7 @@ import { withStyles, Grid, createMuiTheme, MuiThemeProvider } from '@material-ui
 import TextField from '@material-ui/core/TextField';
 import green from '@material-ui/core/colors/green';
 import orange from '@material-ui/core/colors/orange';
+import red from '@material-ui/core/colors/red';
 import Typography from '@material-ui/core/Typography';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import Fab from '@material-ui/core/Fab';
@@ -11,6 +12,7 @@ import { withRouter } from 'react-router-dom';
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 //const logoimgURL='http://172.17.0.1:9000/assets/logo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20181228%2F%2Fs3%2Faws4_request&X-Amz-Date=20181228T001927Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=36310fdac98fc5666d48dcf8a4402165b33a0d87b12457589164b4ed175b3830';
@@ -31,6 +33,9 @@ const style = theme => ({
     },
     title : {
         color : 'green'
+    },
+    circular : {
+        height : 100
     }
     
 });
@@ -38,7 +43,7 @@ const style = theme => ({
 const theme = createMuiTheme({
     palette: {
         primary: green,
-        secondary: orange
+        secondary: red
     },
     typography: {useNextVariants: true},
 });
@@ -106,7 +111,7 @@ class Login extends React.Component {
     }
 
     render(){
-        const { classes } = this.props;
+        const { classes , user } = this.props;
 
         return (
            
@@ -114,39 +119,47 @@ class Login extends React.Component {
                     <Grid item xs={3}>
                        
                         <MuiThemeProvider theme={theme}>
+                            
                             <Grid container direction='column' spacing={24} >
-                                <Grid item>
-                                    <Typography variant='h2' className={classes.title} > DEEP BIO </Typography>
-                                    <TextField
-                                    fullWidth
-                                    onChange={this.handleChange}
-                                    className={classes.margin}
-                                    inputProps={textInputProps}
-                                    label='ID'
-                                    margin='normal'
-                                    name='id'
-                                    inputRef = {(ref)=> {this.idInput = ref}}
-                                    />
+                            <Typography variant='h2' className={classes.title} > DEEP BIO </Typography>
+                               {user.pending ? <Grid item style={{height :150}}><CircularProgress/></Grid> :
+                                <Grid container item direction='column' justify='center' spacing={24}>
+                                    <Grid item>
+                                        <TextField
+                                        fullWidth
+                                        onChange={this.handleChange}
+                                        className={classes.margin}
+                                        inputProps={textInputProps}
+                                        label='ID'
+                                        margin='normal'
+                                        name='id'
+                                        inputRef = {(ref)=> {this.idInput = ref}}
+                                        />
+                                    </Grid>
+                                    
+                                    <Grid item>
+                                        <TextField
+                                        fullWidth
+                                        name='pw'
+                                        type="password"
+                                        className={classes.margin}
+                                        onChange={this.handleChange}
+                                        onKeyPress={this.handleKeyPress}
+                                        label="Password"
+                                        inputProps={textInputProps}
+                                        inputRef = {(ref)=> {this.pwInput = ref}}
+                                        />
+                                    </Grid>
+                               
+                                    <Grid item>
+                                        <Fab color={ (user.wrong === 0) ? "primary" : "secondary"} aria-label="Log in" className={classes.fab}>   
+                                            <PowerSettingsNew className={classes.icon} onClick={this.handleClick} />
+                                        </Fab>
+                                    </Grid>
                                 </Grid>
-                                <Grid item>
-                                    <TextField
-                                    fullWidth
-                                    name='pw'
-                                    type="password"
-                                    className={classes.margin}
-                                    onChange={this.handleChange}
-                                    onKeyPress={this.handleKeyPress}
-                                    label="Password"
-                                    inputProps={textInputProps}
-                                    inputRef = {(ref)=> {this.pwInput = ref}}
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <Fab color="primary" aria-label="Log in" className={classes.fab}>   
-                                        <PowerSettingsNew className={classes.icon} onClick={this.handleClick} />
-                                    </Fab>
-                                </Grid>
+                                }
                             </Grid>
+                             
                         </MuiThemeProvider>
                     </Grid>
                 </Grid>

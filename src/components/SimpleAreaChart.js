@@ -6,7 +6,7 @@ import XAxis from 'recharts/lib/cartesian/XAxis';
 import YAxis from 'recharts/lib/cartesian/YAxis';
 import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
-import Legend from 'recharts/lib/component/Legend';
+
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -19,28 +19,24 @@ const styles = theme => ({
   },
 });
 
-const stroke = [ "#82ca9d" , "#8884d8", "#4484d8", "#113458", "#41aff8", "#ff84d8" ];
-
 // Line Type, data key, stroke, active Dot
-class StackedAreaChart extends Component {
+class SimpleAreaChart extends Component {
   render () {
 
-    const { classes, data , xDataKey ,type, width, height } = this.props;
+    const { classes, data , xDataKey , dataKey ,type, width, height, margin, chartColor } = this.props;
 
     return (
       <div>
       <Typography component="div" className={classes.chartContainer}>
         <ResponsiveContainer width={width} height={height}>
-            <AreaChart  data={data} margin={{top: 10, right: 30, left: 30, bottom: 0}}>
+            <AreaChart  data={data} margin={margin}>
             <CartesianGrid strokeDasharray="3 3"/>
             <XAxis dataKey={xDataKey}/>
             <YAxis/>
-            <Legend/>
             <Tooltip/>
-            {  data.length !== 0 && Object.keys(data[0]).map( (v, i)=>{
-                if( i !== 0 ) return (
-                    <Area key={i-1} type={type} dataKey={v} stackId='1' stroke={stroke[i-1]} fill={stroke[i-1]} />
-                )}) }
+           
+                    <Area  type={type} dataKey={dataKey} stackId='1' stroke={chartColor} fill={chartColor} />
+           
         </AreaChart>
         </ResponsiveContainer>
       </Typography>
@@ -49,18 +45,22 @@ class StackedAreaChart extends Component {
   }
 }
 
-StackedAreaChart.defaultProps = {
+SimpleAreaChart.defaultProps = {
   width : "99%",
   height : 350,
-
+  type : 'monotone',
+  chartColor : '#8884d8',
+  margin : {top: 10, right: 0, left: 0, bottom: 0}
 }
 
-StackedAreaChart.propTypes = {
+SimpleAreaChart.propTypes = {
   classes: PropTypes.object.isRequired,
   data : PropTypes.array.isRequired,
   xDataKey : PropTypes.string.isRequired,
-  type : PropTypes.string.isRequired
+  type : PropTypes.string.isRequired,
+  tableName : PropTypes.string.isRequired,
+  chartColor : PropTypes.string.isRequired
 };
 
 
-export default  withStyles(styles)(StackedAreaChart);
+export default  withStyles(styles)(SimpleAreaChart);

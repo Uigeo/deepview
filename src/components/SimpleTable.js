@@ -59,12 +59,12 @@ class SimpleTable extends Component {
                   return (
                     <TableRow key={i}>
                     <TableCell component="th" scope="row">
-                      {v.sname}
+                      {v.slideid}
                     </TableCell>
                     <TableCell align="right">{v.upload}</TableCell>
                     <TableCell align="right">{v.hospital}</TableCell>
                     <TableCell align="right">{v.diagnosis}</TableCell>
-                    <TableCell align="right">{v.dying}</TableCell>
+                    <TableCell align="right">{v.stain}</TableCell>
                   </TableRow>
                   );
                 })}

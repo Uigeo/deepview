@@ -9,9 +9,12 @@ import { Paper, Grid } from '@material-ui/core';
 import StackedAreaChart from '../components/StackedAreaChart';
 import ActivePieChart from '../components/ActivePieChart';
 import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 
 const styles = {
-
+    sizedBox : {
+        height : 300
+    }
 }
 
 class TablePage extends Component {
@@ -25,51 +28,63 @@ class TablePage extends Component {
 
   render() {
 
-    const { slide } = this.props;
+    const { slide, classes } = this.props;
 
     return (
-        <Paper elevation={2} >
+        
+        
         <Grid container direction="column" spacing={24}>
+            <Grid item xs={12} style={{height:150}} />
             <Grid item xs={12}>
-                
+                <Typography variant="h4" gutterBottom component="h2">
+                    Slides Per Year
+                </Typography>
                     <SimpleLineChart
                         data =  {slide.spys}
                         xDataKey = 'year' 
                         type='monotone'
-                        tableName= 'Slides Per Year'
+                        height = {500}
                     />
             
             </Grid>
-            <Divider inset={true} />
+
+            <Grid item xs={12} className={classes.sizedBox} />
+
             <Grid item xs={12}>
-                
-                    <StackedAreaChart
+                <Typography variant="h4" gutterBottom component="h2">
+                    Total Slides per Yaer
+                </Typography>
+                <StackedAreaChart
                         data = {slide.spys}
                         xDataKey = 'year'
                         type = 'monotone'
-                        tableName = 'Total Slides per Yaer'
                     />
                
             </Grid>
-            
+            <Grid item xs={12} className={classes.sizedBox} alignItems='center' > </Grid>
             <Grid item xs={12}>
                 
-                    <Grid container direction="row"
-                        justify="center"
-                        alignItems="center">
+                    <Grid container direction="row" justify="center" alignItems="center">
                         <Grid item>
+                        <Typography variant="h4" gutterBottom component="h2">
+                            Rate of Slides per Hospital
+                        </Typography>
                             <ActivePieChart
                                 data = {slide.sph}
-                                tableName = 'Rate of Slides per Hospital'
-                                innerRadius = {60}
-                                outerRadius = {80}
+                                innerRadius = {90}
+                                outerRadius = {120}
+                                height = {500}
+                                width = {600}
                             />
                         </Grid>
                     </Grid>
                 
             </Grid>
+            <Grid item xs={12} className={classes.sizedBox} />
             <Grid item xs={12}>
-                
+                <Typography variant="h4" gutterBottom component="h2">
+                    Total Slides per Diagnosis
+                </Typography>
                     <StackedAreaChart
                         data = {slide.spds}
                         xDataKey = 'diagnosis'
@@ -78,8 +93,9 @@ class TablePage extends Component {
                     />
                 
             </Grid>
+            <Grid item xs={12} className={classes.sizedBox} />
         </Grid>
-        </Paper>
+       
     )
   }
 }

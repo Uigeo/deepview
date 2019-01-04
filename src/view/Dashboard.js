@@ -12,6 +12,8 @@ import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as slideActions from '../modules/slides';
+import colorPalette from '../colorPalette';
+import SimpleAreaChart from '../components/SimpleAreaChart';
 
 
 const styles = theme => ({
@@ -26,7 +28,11 @@ const styles = theme => ({
   },
   total: {
     padding: theme.spacing.unit * 1,
-    textAlign: 'center'
+    textAlign: 'center',
+    color : colorPalette[3]
+  },
+  chartTitle :{
+    color : colorPalette[4]
   }
 });
 
@@ -51,12 +57,12 @@ class Dashboard extends React.Component {
       <div className={classes.root}>
         <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper}>
-              <Typography variant="h6" component="h5">
+            <Paper className={classes.paper} elevation={10}>
+              <Typography variant="headline" component="h5" className={classes.chartTitle} >
                 Total Number of Slides
               </Typography>
               <Grid container alignItems='center' justify='center' style={{height: '99%'}} >
-                <Typography variant="h2" component="h1" className={classes.total}>
+                <Typography variant="h1" component="h1" className={classes.total}>
                   {slide.totalNum}
                 </Typography>
               </Grid>
@@ -64,29 +70,22 @@ class Dashboard extends React.Component {
           </Grid>
         
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper}>
-            <Typography  component="h5">
+            <Paper className={classes.paper} elevation={10}>
+            <Typography variant="headline" component="h5" className={classes.chartTitle}>
                 Slides per year
             </Typography>
-            <ResponsiveContainer width="99%" height={300}>
-              <BarChart  data={slide.spy} margin={{top: 40, right: 0, left: 0, bottom: 0}} maxBarSize={20}>
-                <CartesianGrid strokeDasharray="3 3"/>
-                  <XAxis dataKey="year" tickSize={2} height={20}/>
-                  <Tooltip/>
-                <Bar dataKey="count" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
+            <SimpleAreaChart data={slide.spy} xDataKey="year" dataKey='count' chartColor={colorPalette[1]} />
             </Paper>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper}>
-              <Typography variant="h7" component="h5">
+            <Paper className={classes.paper} elevation={10}>
+              <Typography variant="headline" component="h5" className={classes.chartTitle}>
                   #Slides per Hospital
               </Typography>
               <ResponsiveContainer width="99%" height={300} alignItems="center">
                 <PieChart  margin={{top: 40}}>
-                  <Pie  isAnimationActive={true}  data={slide.sph} outerRadius={70} fill="#8884d8" label/>
+                  <Pie  isAnimationActive={true}  data={slide.sph} outerRadius={90} innerRadius={20}  fill={colorPalette[0]} label/>
                   <Tooltip/>
                 </PieChart>
               </ResponsiveContainer>
@@ -94,20 +93,20 @@ class Dashboard extends React.Component {
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper}>
-              <Typography variant="h7" component="h5"> #Slides per diagnosis </Typography>
+            <Paper className={classes.paper} elevation={10}>
+              <Typography variant="headline" component="h5" className={classes.chartTitle}> #Slides per diagnosis </Typography>
               <ResponsiveContainer width="99%" height={300} alignItems="center">
               <BarChart data={slide.spds}
                           margin={{top: 40, right: 10, left: 10, bottom: 0}} maxBarSize={20}>
                   <CartesianGrid strokeDasharray="3 3"/>
                   <XAxis dataKey="diagnosis"/>
-                  <YAxis/>
+                  <YAxis />
                   <Tooltip/>
-                  
-                  <Bar dataKey="AS" stackId="a" fill="#8884d8" />
-                  <Bar dataKey="HY" stackId="a" fill="#82ca9d" />
-                  <Bar dataKey="KR" stackId="a" fill="#443a5d" />
-                  <Bar dataKey="SE" stackId="a" fill="#223f4d" />
+                  <Legend/>
+                  <Bar dataKey="HYUMC" stackId="a" fill={colorPalette[0]} />
+                  <Bar dataKey="KBSMC" stackId="a" fill={colorPalette[2]} />
+                  <Bar dataKey="KUMC" stackId="a" fill={colorPalette[3]}  />
+                  <Bar dataKey="SMC" stackId="a" fill={colorPalette[1]}  />
               </BarChart>
               </ResponsiveContainer>
             </Paper>
@@ -116,8 +115,8 @@ class Dashboard extends React.Component {
         </Grid>
         <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper}>
-            <Typography variant="h7" component="h5"> Slides rate per year </Typography>
+            <Paper className={classes.paper} elevation={10}>
+            <Typography variant="headline" component="h5" className={classes.chartTitle}> Slides rate per year </Typography>
               <ResponsiveContainer width='99%' height={400}>
                 <AreaChart  data={slide.spys} stackOffset="expand"
                         margin={{top: 40, right: 0, left: 0, bottom: 0}} >
@@ -125,17 +124,17 @@ class Dashboard extends React.Component {
                     <YAxis tickFormatter={toPercent}/>
                     <Legend/>
                     <Tooltip/>
-                    <Area type='monotone' dataKey='AS' stackId="1" stroke='#8884d8' fill='#8884d8' />
-                    <Area type='monotone' dataKey='HY' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-                    <Area type='monotone' dataKey='KR' stackId="1" stroke='#ffc658' fill='#ffc658' />
-                    <Area type='monotone' dataKey='SE' stackId="1" stroke='#ffc658' fill='#11c658' />
+                    <Area type='monotone' dataKey='HYUMC' stackId="1" stroke={colorPalette[0]} fill={colorPalette[0]} />
+                    <Area type='monotone' dataKey='KBSMC' stackId="1" stroke={colorPalette[2]} fill={colorPalette[2]} />
+                    <Area type='monotone' dataKey='KUMC' stackId="1" stroke={colorPalette[3]} fill={colorPalette[3]} />
+                    <Area type='monotone' dataKey='SMC' stackId="1" stroke={colorPalette[1]} fill={colorPalette[1]} />
                 </AreaChart>
               </ResponsiveContainer>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper}>
-            <Typography variant="h7" component="h5"> Slides rate per year </Typography>
+            <Paper className={classes.paper} elevation={10} >
+            <Typography variant="headline" component="h5" className={classes.chartTitle}> #Slides per Hospiter </Typography>
               <ResponsiveContainer width='99%' height={400}>
               <BarChart data={slide.sphs} layout='vertical'
                   margin={{top: 40, right: 0, left: 0, bottom: 5}}>
@@ -144,11 +143,9 @@ class Dashboard extends React.Component {
                   <YAxis  dataKey="hospital" type='category'/>
                   <Tooltip/>
                   <Legend />
-                  <Bar dataKey="G1" fill="#8884d8" />
-                  <Bar dataKey="G2" fill="#82ca9d" />
-                  <Bar dataKey="G3" fill="#441233" />
-                  <Bar dataKey="G4" fill="#221387" />
-                  <Bar dataKey="G5" fill="#14DDEE" />
+                  <Bar dataKey="2016" fill={colorPalette[2]} />
+                  <Bar dataKey="2017" fill={colorPalette[3]}/>
+                  <Bar dataKey="2018" fill={colorPalette[1]}/>
               </BarChart>
               </ResponsiveContainer>
             </Paper>

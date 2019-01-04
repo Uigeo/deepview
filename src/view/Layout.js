@@ -20,6 +20,7 @@ import Dashboard from './Dashboard';
 import Footer from './Footer';
 import ProfileMenu from '../components/ProfileMenu';
 import TablePage from './TablePage';
+import colorPalette from '../colorPalette';
 
 
 const drawerWidth = 240;
@@ -29,8 +30,7 @@ const styles = theme => ({
     display: 'flex',
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-    
+    paddingRight: 24 // keep right padding when drawer closed
   },
   icon : {
     color : '#FFFFFF'
@@ -43,13 +43,13 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    boxShadow: '0 0px'
+    boxShadow: '1 1px'
   },
   appBarShift: {
     marginLeft: drawerWidth,

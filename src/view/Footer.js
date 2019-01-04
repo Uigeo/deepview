@@ -74,7 +74,7 @@ function Footer({ ...props }) {
           <span>
             &copy; {1900 + new Date().getYear()}{" "}
             <a href="https://github.com/Uigeo/deepview" className={classes.a}>
-              Yaeger Mun
+              Uigeo Mun
             </a>, made for deebio pilot project 
           </span>
         </p>

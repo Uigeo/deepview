@@ -19,6 +19,7 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { Collapse, TextField } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 //import Grid from '@material-ui/core/Grid';
+import colorPalette from '../colorPalette';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -34,11 +35,11 @@ import SlideModal from './SlideModal'
 
 
 const rows = [
-  { id: 'slideid', numeric: false, disablePadding: true, label: 'Slide Name' },
+  { id: 'slide', numeric: false, disablePadding: true, label: 'Slide Name' },
   { id: 'upload', numeric: true, disablePadding: false, label: 'Upload Date' },
   { id: 'hospital', numeric: false, disablePadding: false, label: 'Hospital' },
-  { id: 'diagnosis', numeric: true, disablePadding: false, label: 'Diagnosis' },
-  { id: 'dying', numeric: false, disablePadding: false, label: 'Dying' },
+  { id: 'diagnosis', numeric: false, disablePadding: false, label: 'Diagnosis' },
+  { id: 'stain', numeric: false, disablePadding: false, label: 'stain' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -56,10 +57,11 @@ class EnhancedTableHead extends React.Component {
 
     return (
       <TableHead>
-        <TableRow>
+        <TableRow style={{height:90}}>
           {rows.map(row => {
             return (
               <TableCell
+                
                 key={row.id}
                 align={row.numeric ? 'right' : 'left'}
                 padding={'default'}
@@ -119,15 +121,18 @@ const toolbarStyles = theme => ({
   title: {
     flex: '0 0 auto',
   },
+  tableBodyCell : {
+    fontSize : 20,
+  }
 });
 
-const pivot = ['slideid', 'diagnosis', 'hospital' ,'dying'];
+const pivot = ['slide', 'diagnosis', 'hospital' ,'stain'];
 
 class EnhancedTableToolbar extends React.Component {
 
   state = {
     filterOpen : false,
-    pivot : 'slideid',
+    pivot : 'slide',
     keyword : '',
     offset : 0,
     limit : 100,
@@ -160,7 +165,7 @@ class EnhancedTableToolbar extends React.Component {
       >
         <div className={classes.title}>
          
-            <Typography variant="h6" id="tableTitle">
+            <Typography variant="h3" id="tableTitle">
               Slides
             </Typography>
        
@@ -244,6 +249,9 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
+  tableBodyCell : {
+    fontSize : 20
+  }
 });
 
 class EnhancedTable extends React.Component {
@@ -317,8 +325,8 @@ class EnhancedTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, slide.totalNum - page * rowsPerPage);
 
     return (
-      <Paper className={classes.root}>
-        <SlideModal top={70} left={70} width={800} height={800}/>
+      <Paper className={classes.root} elevation={10}>
+        <SlideModal top={70} left={200} width={1000} height={800}/>
         <EnhancedTableToolbar  />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
@@ -333,16 +341,17 @@ class EnhancedTable extends React.Component {
               {slide.slides.map( (n ,i) => {
                   return (
                     <TableRow
+                    style={{height:70}}
                       hover
                       onClick={ ()=>{this.handleClick(n)}} //event => this.handleClick(event, n.id)
                       tabIndex={-1}
                       key={i}
                     >
-                      <TableCell component="th" scope="row" padding="default">{n.slideid}</TableCell>
-                      <TableCell align="right">{n.upload}</TableCell>
-                      <TableCell align="right">{n.hospital}</TableCell>
-                      <TableCell align="right">{n.diagnosis}</TableCell>
-                      <TableCell align="right">{n.dying}</TableCell>
+                      <TableCell className={classes.tableBodyCell} component="th" scope="row" padding="default">{n.slide}</TableCell>
+                      <TableCell className={classes.tableBodyCell} align="right">{n.upload}</TableCell>
+                      <TableCell className={classes.tableBodyCell} align="right">{n.hospital}</TableCell>
+                      <TableCell className={classes.tableBodyCell} align="right">{n.diagnosis}</TableCell>
+                      <TableCell className={classes.tableBodyCell} align="right">{n.stain}</TableCell>
                     </TableRow>
                   );
                 })}

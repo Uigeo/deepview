@@ -21,17 +21,23 @@ export const login = (id, pw) => dispatch => {
     dispatch({type : LOGIN_PENDING});
     return getUser(id, pw).then(
         (response)=> {
-            console.log(response.data.users);
-            if(response.data.users.length !==0){
-                dispatch({
-                    type: LOGIN_SUCCESS,
-                    payload : response.data.users[0]
-                });
+            console.log(response.data.user);
+            if(response.data.user !== null){
+                setTimeout( ()=> {
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload : response.data.user})
+                    }, 1000
+                );
+                
             }else {
-                dispatch({
-                    type: LOGIN_FAILURE,
-                    payload : response.data.users[0]
-                })
+                setTimeout( ()=>{
+                    dispatch({
+                        type: LOGIN_FAILURE,
+                        payload : { user : response.data.user , wrong : response.data.wrong  }
+                    })
+                } , 1000 );
+                
             }
         }
     ).catch( error=> {
@@ -62,7 +68,8 @@ export const logout = () => dispatch => {
 const defaultState = {
     "name": null,
     "userid": null,
-    "pending" : false
+    "pending" : false,
+    "wrong" : 0
 }
 
 const initialState = defineState(defaultState)('user');
@@ -73,21 +80,23 @@ export default handleActions({
     [LOGIN_PENDING] : (state, action) => {
         return {
             ...state,
-            "pending" : true
+            "pending" : true,
         }
     },
     [LOGIN_SUCCESS] : (state, action) => {
         return {
             "name" : action.payload.name,
             "userid" : action.payload.userid,
-            "pending" : false
+            "pending" : false,
+            "wrong" : 0
         }
     },
     [LOGIN_FAILURE] : (state, action) => {
         return {
             "name" : null,
             "userid" : null,
-            "pending" : false
+            "pending" : false,
+            "wrong" : action.payload.wrong
         }
     },
     [LOGOUT] : (state, action) => {
@@ -95,7 +104,8 @@ export default handleActions({
         return {
             "name" : null,
             "userid" : null,
-            "pending" : false
+            "pending" : false,
+            "wrong" : 0
         }
     }
 }, initialState)

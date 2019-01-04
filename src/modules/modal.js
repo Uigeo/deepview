@@ -26,8 +26,8 @@ const initialState = {
         upload: null,
         hostpital: '',
         diagnosis: null,
-        dying : '',
-        imgPath : ''
+        stain : '',
+        imgpath : ''
     }
 };
 

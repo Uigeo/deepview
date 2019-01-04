@@ -25,13 +25,11 @@ const stroke = [ "#82ca9d" , "#8884d8", "#4484d8", "#113458", "#41aff8", "#ff84d
 class SimpleLineChart extends Component {
   render () {
 
-    const { classes, data , xDataKey ,type, width, height, dot, tableName } = this.props;
+    const { classes, data , xDataKey ,type, width, height, dot } = this.props;
 
     return (
       <div>
-      <Typography variant="h4" gutterBottom component="h2">
-        {tableName}
-      </Typography>
+ 
       <Typography component="div" className={classes.chartContainer}>
         <ResponsiveContainer width={width} height={height}>
           <LineChart data={data} margin={{top: 10, right: 30, left: 0, bottom: 0}} >
@@ -55,7 +53,8 @@ SimpleLineChart.defaultProps = {
   width : "99%",
   height : 350,
   dot : 7,
-  data : undefined
+  data : undefined,
+  type : 'monotone'
 }
 
 SimpleLineChart.propTypes = {
@@ -63,7 +62,6 @@ SimpleLineChart.propTypes = {
   data : PropTypes.array.isRequired,
   xDataKey : PropTypes.string.isRequired,
   type : PropTypes.string.isRequired,
-  tableName : PropTypes.string.isRequired,
   dot : PropTypes.number,
 };
 

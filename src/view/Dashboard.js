@@ -25,6 +25,7 @@ const styles = theme => ({
     textAlign: 'start',
     color: theme.palette.text.secondary,
     height: '100%',
+
   },
   total: {
     padding: theme.spacing.unit * 1,
@@ -33,7 +34,7 @@ const styles = theme => ({
   },
   chartTitle :{
     color : colorPalette[4]
-  }
+  },
 });
 
 
@@ -52,12 +53,12 @@ class Dashboard extends React.Component {
   render () {
  
     const { classes, slide } = this.props;
-
+    const elev = 2;
     return (
       <div className={classes.root}>
         <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper} elevation={10}>
+            <Paper className={classes.paper}  elevation={elev}>
               <Typography variant="headline" component="h5" className={classes.chartTitle} >
                 Total Number of Slides
               </Typography>
@@ -70,7 +71,7 @@ class Dashboard extends React.Component {
           </Grid>
         
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper} elevation={10}>
+            <Paper className={classes.paper} elevation={elev}>
             <Typography variant="headline" component="h5" className={classes.chartTitle}>
                 Slides per year
             </Typography>
@@ -79,7 +80,7 @@ class Dashboard extends React.Component {
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper} elevation={10}>
+            <Paper className={classes.paper} elevation={elev}>
               <Typography variant="headline" component="h5" className={classes.chartTitle}>
                   #Slides per Hospital
               </Typography>
@@ -93,7 +94,7 @@ class Dashboard extends React.Component {
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <Paper className={classes.paper} elevation={10}>
+            <Paper className={classes.paper} elevation={elev}>
               <Typography variant="headline" component="h5" className={classes.chartTitle}> #Slides per diagnosis </Typography>
               <ResponsiveContainer width="99%" height={300} alignItems="center">
               <BarChart data={slide.spds}
@@ -115,7 +116,7 @@ class Dashboard extends React.Component {
         </Grid>
         <Grid container spacing={24} alignItems="stretch" direction="row" justify="space-around">
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper} elevation={10}>
+            <Paper className={classes.paper} elevation={elev}>
             <Typography variant="headline" component="h5" className={classes.chartTitle}> Slides rate per year </Typography>
               <ResponsiveContainer width='99%' height={400}>
                 <AreaChart  data={slide.spys} stackOffset="expand"
@@ -133,7 +134,7 @@ class Dashboard extends React.Component {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper} elevation={10} >
+            <Paper className={classes.paper} elevation={elev} >
             <Typography variant="headline" component="h5" className={classes.chartTitle}> #Slides per Hospiter </Typography>
               <ResponsiveContainer width='99%' height={400}>
               <BarChart data={slide.sphs} layout='vertical'

@@ -21,17 +21,15 @@ import Input from '@material-ui/core/Input';
 //import Grid from '@material-ui/core/Grid';
 import colorPalette from '../colorPalette';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as slideActions from '../modules/slides';
 import * as modalActions from '../modules/modal';
 import SlideModal from './SlideModal'
+
+import Grid from '@material-ui/core/Grid';
+
 
 
 const rows = [
@@ -61,7 +59,6 @@ class EnhancedTableHead extends React.Component {
           {rows.map(row => {
             return (
               <TableCell
-                
                 key={row.id}
                 align={row.numeric ? 'right' : 'left'}
                 padding={'default'}
@@ -123,6 +120,21 @@ const toolbarStyles = theme => ({
   },
   tableBodyCell : {
     fontSize : 20,
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+  textType : {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 400,
+  },
+  textSelect : {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 400,
   }
 });
 
@@ -136,6 +148,8 @@ class EnhancedTableToolbar extends React.Component {
     keyword : '',
     offset : 0,
     limit : 100,
+    startDate: new Date('2014-08-18'),
+    endDate: new Date('2014-08-18')
   }
 
   handleFilterClick = () => {
@@ -143,9 +157,17 @@ class EnhancedTableToolbar extends React.Component {
   }
 
   handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+    console.log(event.target);
+    if(event.target.type == 'date'){
+      this.setState({
+        [event.target.name]: new Date(event.target.value),
+      });
+    }else{
+      this.setState({
+        [event.target.name]: event.target.value,
+      });
+    }
+    
   };
 
   handleKeyPress = (e)=> {
@@ -182,36 +204,72 @@ class EnhancedTableToolbar extends React.Component {
         </div>
       </Toolbar>
       <Collapse in={this.state.filterOpen}>
-    
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-helper">Select</InputLabel>
-              <Select
-              
+          <Grid container direction='column' justify='flex-start'>
+            <Grid item>
+              <TextField
+                id="start-date"
+                label="start"
+                type="date"
+                defaultValue=""
+                name='startDate'
+                value={this.state.startDate}
+                onChange={this.handleChange}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+            />
+            <TextField
+                id="end-date"
+                label="end"
+                type="date"
+                defaultValue=""
+                name='endDate'
+                value={this.state.endDate}
+                onChange={this.handleChange}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+            />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="pivot-select"
+                select
+                defaultValue = ""
+                label='select'
+                name='pivot'
+                className={classes.textSelect}
                 value={this.state.pivot}
                 onChange={this.handleChange}
-                input={<Input name="pivot" />}
-              >
-                <MenuItem value=""><em>None</em></MenuItem>
-                    {pivot.map( (v)=>{return (<MenuItem value={v}>{v}</MenuItem>)} )}
-              </Select>
-              <FormHelperText>Some important helper text</FormHelperText>
-          </FormControl>
-      
-          <TextField
-              id="standard-full-width"
-              label="Search"
-              name='keyword'
-              style={{ margin: 8 }}
-              placeholder="keyword"
-              helperText="Full width!"
-              fullWidth
-              onKeyPress={this.handleKeyPress}
-              onChange={this.handleChange}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-          />
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }} >
+                  {pivot.map( (v)=>{return (<option key={v} value={v}>{v}</option>)} )}
+              </TextField>
+            </Grid>
+            <Grid xs={16} item>
+              <TextField
+                id="standard-full-width"
+                label="keyword"
+                name='keyword'
+                className={classes.textType}
+                style={{ margin: 8 }}
+                placeholder="keyword"
+              
+                onKeyPress={this.handleKeyPress}
+                onChange={this.handleChange}
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}/>
+            </Grid>
+          </Grid>
+          
+
+
      
         </Collapse>
       </div>

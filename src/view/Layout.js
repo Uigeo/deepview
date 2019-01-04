@@ -15,7 +15,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DrawList from './DrawList';
 import EnhancedTable from '../components/EnhancedTable';
 
-import {  Route} from 'react-router-dom';
+import { Route} from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Footer from './Footer';
 import ProfileMenu from '../components/ProfileMenu';
@@ -49,7 +49,7 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    boxShadow: '1 1px'
+    boxShadow: '0.1 1px'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -175,7 +175,6 @@ class Layout extends React.Component {
           </div>
           
             <DrawList/>
-          <Divider />
           
         </Drawer>
         <main className={classes.content}>

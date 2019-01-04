@@ -55,6 +55,13 @@ const textInputProps= {
      }
 };
 
+const labelProps= {
+    style: { 
+        labelAlign : "center"
+        
+     }
+};
+
 
 class Login extends React.Component {
 
@@ -133,6 +140,7 @@ class Login extends React.Component {
                                         label='ID'
                                         margin='normal'
                                         name='id'
+                                        error = { user.wrong > 0}
                                         inputRef = {(ref)=> {this.idInput = ref}}
                                         />
                                     </Grid>
@@ -146,13 +154,14 @@ class Login extends React.Component {
                                         onChange={this.handleChange}
                                         onKeyPress={this.handleKeyPress}
                                         label="Password"
+                                        error = { user.wrong > 0}
                                         inputProps={textInputProps}
                                         inputRef = {(ref)=> {this.pwInput = ref}}
                                         />
                                     </Grid>
                                
                                     <Grid item>
-                                        <Fab color={ (user.wrong === 0) ? "primary" : "secondary"} aria-label="Log in" className={classes.fab}>   
+                                        <Fab color= "primary" aria-label="Log in" className={classes.fab}>   
                                             <PowerSettingsNew className={classes.icon} onClick={this.handleClick} />
                                         </Fab>
                                     </Grid>

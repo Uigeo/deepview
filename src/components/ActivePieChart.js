@@ -38,7 +38,7 @@ class ActivePieChart extends Component {
     return (
       <div>
         <ResponsiveContainer width={width} height={height} >
-            { data.length != 0 && 
+            
             <PieChart >
                  <Pie 
                      activeIndex={this.state.activeIndex}
@@ -50,7 +50,7 @@ class ActivePieChart extends Component {
                      onMouseEnter={this.onPieEnter}
                  />
             </PieChart>
-            }
+       
         </ResponsiveContainer>
        
       </div>

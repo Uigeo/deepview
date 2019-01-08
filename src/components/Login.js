@@ -13,7 +13,7 @@ import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import Button from '@material-ui/core/Button';
 
 //const logoimgURL='http://172.17.0.1:9000/assets/logo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20181228%2F%2Fs3%2Faws4_request&X-Amz-Date=20181228T001927Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=36310fdac98fc5666d48dcf8a4402165b33a0d87b12457589164b4ed175b3830';
 
@@ -36,6 +36,11 @@ const style = theme => ({
     },
     circular : {
         height : 100
+    },
+    button : {
+        width : '100%',
+        height : 40,
+        marginBottom : 10
     }
     
 });
@@ -55,12 +60,7 @@ const textInputProps= {
      }
 };
 
-const labelProps= {
-    style: { 
-        labelAlign : "center"
-        
-     }
-};
+
 
 
 class Login extends React.Component {
@@ -161,14 +161,16 @@ class Login extends React.Component {
                                     </Grid>
                                
                                     <Grid item>
-                                        <Fab color= "primary" aria-label="Log in" className={classes.fab}>   
-                                            <PowerSettingsNew className={classes.icon} onClick={this.handleClick} />
-                                        </Fab>
+                                        <Button variant="outlined" color="primary" onClick={this.handleClick} className={classes.button}>
+                                            SignIn
+                                        </Button> 
+                                        <Button variant="outlined" color="secondary" onClick={this.handleClick} className={classes.button}>
+                                            SignUp
+                                        </Button> 
                                     </Grid>
                                 </Grid>
                                 }
                             </Grid>
-                             
                         </MuiThemeProvider>
                     </Grid>
                 </Grid>

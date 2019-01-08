@@ -92,7 +92,7 @@ const renderActiveShape = (props) => {
   
     return (
       <g>
-        <text fontSize={30} x={cx} y={cy} dy={5} textAnchor="middle" fill={fill}>{payload.name}</text>
+        <text fontSize={30} x={cx} y={cy} dy={9} textAnchor="middle" fill={fill}>{payload.name}</text>
         <Sector
           cx={cx}
           cy={cy}

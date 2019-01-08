@@ -2,20 +2,18 @@
 import {  handleActions } from 'redux-actions';
 import axios from 'axios';
 
-const host = 'http://localhost:';
-const port = '3001';
 
-// host + port  + 
+
 function getTotalSlidesNum(){
     return axios.get('/slides/total');
 }
-// host + port  +
+
 function getSlides(limit, offset, orderby, range){
     var url =  '/slides/get/' + limit + '/' + offset+ '/' + orderby + '/' + range;
     console.log(url);
     return axios.get(url);
 }
-//host + port  +
+
 function getChart(chart){
     var url =  '/slides/chart/'+ chart;
     return axios.get(url);

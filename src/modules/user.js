@@ -3,12 +3,15 @@ import {  handleActions } from 'redux-actions';
 import axios from 'axios';
 import {defineState, resetState} from 'redux-localstore';
 
+
+
 function getUser(input_id, input_pw){
-    return axios.post('http://localhost:3001/users/login', {id : input_id, pw: input_pw});
+    axios.defaults.withCredentials =true;
+    return axios.post('/users/login', {id : input_id, pw: input_pw});
 }
 
 function logoutUser(){
-    return axios.get('http://localhost:3001/users/logout');
+    return axios.get('/users/logout');
 }
 
 const LOGIN_PENDING = 'user/LOGIN_PENDING';

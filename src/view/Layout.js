@@ -6,21 +6,19 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
+import colorPalette from '../colorPalette';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DrawList from './DrawList';
-import EnhancedTable from '../components/EnhancedTable';
-
+import TablePage from './TablePage';
 import { Route} from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Footer from './Footer';
 import ProfileMenu from '../components/ProfileMenu';
-import TablePage from './TablePage';
-import colorPalette from '../colorPalette';
+import ChartPage from './ChartPage';
 
 
 const drawerWidth = 240;
@@ -33,7 +31,7 @@ const styles = theme => ({
     paddingRight: 24 // keep right padding when drawer closed
   },
   icon : {
-    color : '#FFFFFF'
+    color : '#333333'
   },
   toolbarIcon: {
     display: 'flex',
@@ -49,7 +47,7 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    boxShadow: '0.1 1px'
+    boxShadow: '0 0px'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -72,7 +70,7 @@ const styles = theme => ({
   },
   drawerPaper: {
     position: 'relative',
-    backgroundColor: "#295073",
+    backgroundColor: "#FFFFFF",
     whiteSpace: 'nowrap',
     width: drawerWidth,
     
@@ -83,7 +81,7 @@ const styles = theme => ({
   },
   drawerPaperClose: {
     overflowX: 'hidden',
-    backgroundColor: "#295073",
+    backgroundColor: "#FFFFFF",
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -99,9 +97,8 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     height: '100vh',
     overflow: 'auto',
-    
+    backgroundColor : '#f3f3f3'
   },
- 
   h5: {
     marginBottom: theme.spacing.unit * 2,
   },
@@ -119,21 +116,21 @@ class Layout extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
-
+  // style={{borderTopColor : colorPalette[1], borderTopWidth : 5}}
   render() {
     const { classes } = this.props;
 
     return (
      
       <div className={classes.root}>
-        <CssBaseline />
+       
         <AppBar
           
           color="default"
           position="absolute"
           className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
         >
-          <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
+          <Toolbar disableGutters={!this.state.open} className={classes.toolbar} >
             <IconButton
               color="inherit"
               aria-label="Open drawer"
@@ -152,15 +149,16 @@ class Layout extends React.Component {
               noWrap
               className={classes.title}
             >
-              DeepBio
+              
             </Typography>
 
             <ProfileMenu/>
            
           </Toolbar>
-          <Divider />
+         
         </AppBar>
-        <Drawer 
+        <Drawer
+          
           style = {{backgroundColor : '#295073'}}
           variant="permanent"
           classes={{
@@ -174,14 +172,14 @@ class Layout extends React.Component {
             </IconButton>
           </div>
           
-            <DrawList/>
+            <DrawList openDrawer = {this.state.open}/>
           
         </Drawer>
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Route exact path='/' component={Dashboard}/>
-            <Route path='/chart' component={TablePage}/>
-            <Route path='/table' component={EnhancedTable}/>
+            <Route path='/chart' component={ChartPage}/>
+            <Route path='/table' component={TablePage}/>
             <Footer/>
         </main>
         

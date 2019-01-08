@@ -11,44 +11,64 @@ import LayersIcon from '@material-ui/icons/Layers';
 import {Link} from 'react-router-dom';
 import List from '@material-ui/core/List';
 import { Typography } from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Collapse from '@material-ui/core/Collapse';
-import StarBorder from '@material-ui/icons/StarBorder';
 
 const style = theme => ({
-  root : {
-    backgroundColor : "#FFFFFF"
-  },
+
   icon : {
-    color: '#FFFFFF'
+    color: '#333333'
   },
   itemText : {
-    color : '#FFFFFF'
+    color : '#333333',
+    fontSize : 20
   },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
+  activeBorder : {
+    borderColor : '#244411',
+    borderWidth : 10
+  },
+  logo : {
+    fontSize : 30,
+    fontWeight : 'bord',
+    marginBottom : 40,
+    paddingLeft : 60
+  }
 });
 
 class DrawList extends React.Component {
 
   state = {
-    tableListOpen : false
+    tableListOpen : false,
+    selectedIndex : 0
   }
 
   handleClick = () => {
     this.setState(state => ({ tableListOpen: !state.tableListOpen }));
   };
 
+  handleListItemClick = (event, index) => {
+    this.setState({ selectedIndex: index });
+  };
+
+
 
   render() {
-    const {classes} = this.props;
+    const {classes, openDrawer} = this.props;
     return (
 
       <List >
-        <Link to="/" >
-          <ListItem button >
+        { openDrawer &&
+          <ListItem className={classes.logo}>
+          DeepBio
+          </ListItem>
+        } 
+        <Link to="/" className={classes.activeBorder} >
+          <ListItem 
+          button
+          selected={this.state.selectedIndex === 0}
+          onClick={event => this.handleListItemClick(event, 0)}
+          >
             <ListItemIcon className={classes.icon}>
               <DashboardIcon/>
             </ListItemIcon>
@@ -58,7 +78,11 @@ class DrawList extends React.Component {
 
        
         <Link to="/table">
-          <ListItem button>
+          <ListItem 
+          button
+          selected={this.state.selectedIndex === 1}
+          onClick={event => this.handleListItemClick(event, 1)}
+          >
             <ListItemIcon className={classes.icon}>
               <BarChartIcon />
             </ListItemIcon>
@@ -67,41 +91,16 @@ class DrawList extends React.Component {
         </Link>
      
         <Link to="/chart">
-          <ListItem button onClick={this.handleClick}>
+          <ListItem 
+          button
+          selected={this.state.selectedIndex === 2} 
+          onClick={event => this.handleListItemClick(event, 2)}>
             <ListItemIcon className={classes.icon}>
               <LayersIcon />
             </ListItemIcon>
             <ListItemText inset primary={<Typography className={classes.itemText}>Chart</Typography>} />
-            {this.state.tableListOpen ? <ExpandLess className={classes.icon} /> : <ExpandMore className={classes.icon}/>}
           </ListItem>
         </Link>
-        <Collapse in={this.state.tableListOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon className={classes.icon}>
-                <StarBorder />
-              </ListItemIcon>
-              <ListItemText inset primary={<Typography className={classes.itemText}> Chart1 </Typography>} />
-            </ListItem>
-          </List>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon className={classes.icon}>
-                <StarBorder />
-              </ListItemIcon>
-              <ListItemText inset primary={<Typography className={classes.itemText}> Chart1 </Typography>} />
-            </ListItem>
-          </List>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon className={classes.icon}>
-                <StarBorder />
-              </ListItemIcon>
-              <ListItemText inset primary={<Typography className={classes.itemText}> Chart1 </Typography>} />
-            </ListItem>
-          </List>
-        </Collapse>
-  
       </List>
     )
   }

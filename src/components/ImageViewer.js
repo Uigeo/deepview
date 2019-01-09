@@ -1,6 +1,6 @@
 import OpenSeadragon from 'openseadragon';
 import React from 'react';
-import classNames from 'classnames';
+//import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
@@ -35,17 +35,15 @@ const loadImage = (src)=> new Promise(function(resolve, reject) {
   });
                
   class ImageViewer extends React.Component {
-  
-    state = {
-        pending : false
-    }
 
       constructor(props) {
-          super(props)
+          super(props);
+          this.state = {
+            pending : false
+          }
       }
       
       render() {
-          let self = this;
           let { id, classes, width, height } = this.props
           return (
               <div  className="ocd-div" ref={node => {this.el = node;}} style={{width:width, height:height}} >

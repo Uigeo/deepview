@@ -24,7 +24,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
     textAlign: "start",
     color: theme.palette.text.secondary,
-    height : '93%'
+    height : '90%'
   },
   total: {
     padding: theme.spacing.unit * 1,

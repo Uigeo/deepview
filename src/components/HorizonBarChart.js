@@ -14,14 +14,16 @@ const HorizonBarChart = props => {
 
   return (
     <ResponsiveContainer width={width} height={height}>
-      <BarChart data={data} margin={margin} layout='vertical'>
+      <BarChart data={data} margin={margin} layout="vertical">
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />
         <YAxis dataKey={yDataKey} type="category" />
         <Legend />
         <Tooltip />
         {data.length !== 0 &&
-          Object.keys(data[0]).sort().reverse()
+          Object.keys(data[0])
+            .sort()
+            .reverse()
             .slice(1)
             .map((v, i) => {
               return (
@@ -44,7 +46,7 @@ HorizonBarChart.PropTypes = {
 HorizonBarChart.defaultPropts = {
   width: "99%",
   height: 300,
-  type : 'monotone',
+  type: "monotone",
   margin: { top: 40, right: 10, left: 10, bottom: 0 },
   yDataKey: "hospital",
   fillColors: [

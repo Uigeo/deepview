@@ -10,16 +10,12 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import { Collapse, TextField } from "@material-ui/core";
-import Input from "@material-ui/core/Input";
-//import Grid from '@material-ui/core/Grid';
-import colorPalette from "../colorPalette";
 
 import compose from "recompose/compose";
 import { bindActionCreators } from "redux";
@@ -157,8 +153,7 @@ class EnhancedTableToolbar extends React.Component {
   };
 
   handleChange = event => {
-    console.log(event.target);
-    if (event.target.type == "date") {
+    if (event.target.type === "date") {
       this.setState({
         [event.target.name]: new Date(event.target.value)
       });

@@ -2,7 +2,7 @@
 import { handleActions } from "redux-actions";
 import axios from "axios";
 
-const host = "http://192.168.0.63:3003";
+const host = "http://192.168.0.63:3001";
 
 function getTotalSlidesNum() {
   return axios.get(host+ "/slides/total");

@@ -24,7 +24,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
     textAlign: "start",
     color: theme.palette.text.secondary,
-    height : '90%'
+    height: "90%"
   },
   total: {
     padding: theme.spacing.unit * 1,
@@ -57,147 +57,141 @@ class Dashboard extends React.Component {
     const { classes, slide } = this.props;
     const elev = 0;
     return (
-      <div >
-   
-      
-          <Grid
-            container
-            spacing={24}
-            alignItems="stretch"
-            direction="row"
-            justify="space-around"
-          >
-            <Grid item xs={6} sm={3}>
-              <Paper className={classes.paper} elevation={elev}>
+      <div>
+        <Grid
+          container
+          spacing={24}
+          alignItems="stretch"
+          direction="row"
+          justify="space-around"
+        >
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper} elevation={elev}>
+              <Typography
+                variant="headline"
+                component="h5"
+                className={classes.chartTitle}
+              >
+                Total Number of Slides
+              </Typography>
+              <Grid
+                container
+                alignItems="center"
+                justify="center"
+                style={{ height: "99%" }}
+              >
                 <Typography
-                  variant="headline"
-                  component="h5"
-                  className={classes.chartTitle}
+                  variant="h1"
+                  component="h1"
+                  className={classes.total}
                 >
-                  Total Number of Slides
+                  {slide.totalNum}
                 </Typography>
-                <Grid
-                  container
-                  alignItems="center"
-                  justify="center"
-                  style={{ height: "99%" }}
-                >
-                  <Typography
-                    variant="h1"
-                    component="h1"
-                    className={classes.total}
-                  >
-                    {slide.totalNum}
-                  </Typography>
-                </Grid>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={6} sm={3}>
-              <Paper className={classes.paper} elevation={elev}>
-                <Typography
-                  variant="headline"
-                  component="h5"
-                  className={classes.chartTitle}
-                >
-                  Slides per year
-                </Typography>
-                <SimpleAreaChart
-                  data={slide.spy}
-                  xDataKey="year"
-                  dataKey="count"
-                  chartColor={colorPalette[1]}
-                />
-              </Paper>
-            </Grid>
-
-            <Grid item xs={6} sm={3}>
-              <Paper className={classes.paper} elevation={elev}>
-                <Typography
-                  variant="headline"
-                  component="h5"
-                  className={classes.chartTitle}
-                >
-                  #Slides per Institution
-                </Typography>
-
-                <SimplePieChart
-                  width="99%"
-                  height={300}
-                  chartData={slide.sph}
-                  margin={{ top: 40, right: 10, left: 10, bottom: 0 }}
-                  fillColor={colorPalette[1]}
-                  outerRadious={70}
-                  innerRadious={20}
-                  nameKey="name"
-                  dataKey="value"
-                />
-              </Paper>
-            </Grid>
-
-            <Grid item xs={6} sm={3}>
-              <Paper className={classes.paper} elevation={elev}>
-                <Typography
-                  variant="headline"
-                  component="h5"
-                  className={classes.chartTitle}
-                >
-                  
-                  #Slides per Institution
-                </Typography>
-                <HorizonBarChart
-                  margin={{ top: 40, right: 0, left: 5, bottom: 0 }}
-                  data={slide.sphs}
-                  yDataKey="hospital"
-                  fillColors={colorPalette}
-                  width="99%"
-                  height={350}
-                />
-              </Paper>
-            </Grid>
-          
-          
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper} elevation={elev}>
-                <Typography
-                  variant="headline"
-                  component="h5"
-                  className={classes.chartTitle}
-                >
-                  
-                  Slides rate per year
-                </Typography>
-
-                <StackedRateAreaChart
-                  margin={{ top: 40, right: 0, left: 0, buttom: 0 }}
-                  width="99%"
-                  height={500}
-                  xDataKey="year"
-                  data={slide.spys}
-                  fillColor={colorPalette}
-                />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper} elevation={elev}>
-                <Typography
-                  variant="headline"
-                  component="h5"
-                  className={classes.chartTitle}
-                >
-                  #Slides per diagnosis
-                </Typography>
-                <StackedBarChart
-                  widht="99%"
-                  height={500}
-                  margin={{ top: 40, right: 10, left: 10, bottom: 0 }}
-                  chartData={slide.spds}
-                  barColors={colorPalette}
-                />
-              </Paper>
-            </Grid>
+              </Grid>
+            </Paper>
           </Grid>
-        
+
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper} elevation={elev}>
+              <Typography
+                variant="headline"
+                component="h5"
+                className={classes.chartTitle}
+              >
+                Slides per year
+              </Typography>
+              <SimpleAreaChart
+                data={slide.spy}
+                xDataKey="year"
+                dataKey="count"
+                chartColor={colorPalette[1]}
+              />
+            </Paper>
+          </Grid>
+
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper} elevation={elev}>
+              <Typography
+                variant="headline"
+                component="h5"
+                className={classes.chartTitle}
+              >
+                #Slides per Institution
+              </Typography>
+
+              <SimplePieChart
+                width="99%"
+                height={300}
+                chartData={slide.sph}
+                margin={{ top: 40, right: 10, left: 10, bottom: 0 }}
+                fillColor={colorPalette[1]}
+                outerRadious={70}
+                innerRadious={20}
+                nameKey="name"
+                dataKey="value"
+              />
+            </Paper>
+          </Grid>
+
+          <Grid item xs={6} sm={3}>
+            <Paper className={classes.paper} elevation={elev}>
+              <Typography
+                variant="headline"
+                component="h5"
+                className={classes.chartTitle}
+              >
+                #Slides per Institution
+              </Typography>
+              <HorizonBarChart
+                margin={{ top: 40, right: 0, left: 5, bottom: 0 }}
+                data={slide.sphs}
+                yDataKey="hospital"
+                fillColors={colorPalette}
+                width="99%"
+                height={350}
+              />
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Paper className={classes.paper} elevation={elev}>
+              <Typography
+                variant="headline"
+                component="h5"
+                className={classes.chartTitle}
+              >
+                Slides rate per year
+              </Typography>
+
+              <StackedRateAreaChart
+                margin={{ top: 40, right: 0, left: 0, buttom: 0 }}
+                width="99%"
+                height={500}
+                xDataKey="year"
+                data={slide.spys}
+                fillColor={colorPalette}
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Paper className={classes.paper} elevation={elev}>
+              <Typography
+                variant="headline"
+                component="h5"
+                className={classes.chartTitle}
+              >
+                #Slides per diagnosis
+              </Typography>
+              <StackedBarChart
+                widht="99%"
+                height={500}
+                margin={{ top: 40, right: 10, left: 10, bottom: 0 }}
+                chartData={slide.spds}
+                barColors={colorPalette}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -206,7 +200,6 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
-
 
 export default compose(
   withStyles(styles),

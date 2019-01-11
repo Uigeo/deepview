@@ -2,7 +2,7 @@ import { handleActions } from "redux-actions";
 import axios from "axios";
 import { defineState, resetState } from "redux-localstore";
 
-const host = "http://localhost:3001";
+const host = "http://192.168.0.63:3001";
 
 function getUser(input_id, input_pw) {
   axios.defaults.withCredentials = true;

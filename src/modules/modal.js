@@ -1,5 +1,5 @@
 import { createAction, handleActions } from "redux-actions";
-import axios from "axios";
+
 
 const SHOW = "modal/SHOW";
 const HIDE = "modal/HIDE";
